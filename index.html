@@ -215,7 +215,11 @@ body {
   display: none;
   animation: fadeSlideIn var(--duration-slow) var(--ease-out);
 }
-.tab-panel.active { display: block; }
+.tab-panel.active {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
 
 @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(10px); }
@@ -482,7 +486,7 @@ body {
   border-radius: 2px;
 }
 
-.chart-canvas { width: 100%; height: 300px; min-height: 280px; }
+.chart-canvas { width: 100%; height: 300px; min-height: 280px; position: relative; }
 
 /* ---- TABLES ---- */
 .data-table {
@@ -1432,7 +1436,7 @@ body {
     borderWidth: 1
   };
 
-  // ---- 核心初始化函数：简单、直接、可靠 ----
+  // ---- 核心初始化函数：多重保障 ----
   function makeChart(containerId, option) {
     var el = document.getElementById(containerId);
     if (!el) { console.warn('[Chart] 找不到容器 #' + containerId); return; }
@@ -1443,6 +1447,13 @@ body {
         var w = el.clientWidth || el.offsetWidth || 0;
         var h = el.clientHeight || el.offsetHeight || 0;
         if (w < 20 || h < 20) {
+          // 尺寸不足时延迟重试（最多3次）
+          el._chartRetryCount = (el._chartRetryCount || 0) + 1;
+          if (el._chartRetryCount <= 3) {
+            console.log('[Chart] ⏳ ' + containerId + ' 尺寸不足 (' + w + '×' + h + ')，第 ' + el._chartRetryCount + ' 次重试');
+            setTimeout(function() { makeChart(containerId, option); }, 200 * el._chartRetryCount);
+            return;
+          }
           el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;font-size:13px;">⏳ 容器尺寸异常 (' + w + '×' + h + ')，请刷新页面</div>';
           return;
         }
@@ -1675,7 +1686,7 @@ body {
   }
 
   // ============================================================
-  // ECharts 加载器（三层CDN回退）
+  // ECharts 加载器（三层CDN回退 + 多重初始化保障）
   // ============================================================
   function loadECharts(urls, idx) {
     idx = idx || 0;
@@ -1690,8 +1701,19 @@ body {
     tag.onload = function() {
       echartsLoaded = true;
       console.log('[ECharts] ✅ 库加载成功: ' + urls[idx]);
-      // 延迟一帧确保DOM就绪
+      // 多重保障：rAF → 延迟100ms → 延迟500ms，确保容器有尺寸
       requestAnimationFrame(function() { initXianShuiWanCharts(); });
+      setTimeout(function() {
+        if (charts.length === 0) { console.log('[ECharts] rAF 未生效，延迟重试'); initXianShuiWanCharts(); }
+      }, 100);
+      setTimeout(function() {
+        if (charts.length === 0) { console.log('[ECharts] 二次重试'); initXianShuiWanCharts(); }
+        // 强制触发所有已创建实例的 resize
+        var all = charts.concat(xinCharts).concat(window.vioCharts || []);
+        for (var i = 0; i < all.length; i++) {
+          try { if (all[i] && !all[i].isDisposed()) all[i].resize(); } catch(e) {}
+        }
+      }, 500);
     };
     tag.onerror = function() {
       console.warn('[ECharts] ⚠️ ' + urls[idx] + ' 失败，尝试下一个...');
