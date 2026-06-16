@@ -50,7 +50,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
 .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
 .chart-box { background: var(--card-bg); border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 16px; }
 .chart-box h4 { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
-.chart-canvas { width: 100%; height: 300px; }
+.chart-canvas { width: 100%; min-height: 300px; }
 
 /* Tables */
 .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -141,11 +141,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
   <div class="chart-row">
     <div class="chart-box">
       <h4>月度营收与订单趋势</h4>
-      <canvas id="chartRevenue" class="chart-canvas"></canvas>
+      <div id="chartRevenue" class="chart-canvas"></div>
     </div>
     <div class="chart-box">
       <h4>CTR / CVR 趋势</h4>
-      <canvas id="chartCTRCVR" class="chart-canvas"></canvas>
+      <div id="chartCTRCVR" class="chart-canvas"></div>
     </div>
   </div>
   <div style="overflow-x:auto;">
@@ -172,11 +172,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
   <div class="chart-row">
     <div class="chart-box">
       <h4>各品类营收分布</h4>
-      <canvas id="chartCategory" class="chart-canvas"></canvas>
+      <div id="chartCategory" class="chart-canvas"></div>
     </div>
     <div class="chart-box">
       <h4>品类季节性趋势（月度营收）</h4>
-      <canvas id="chartSeasonal" class="chart-canvas"></canvas>
+      <div id="chartSeasonal" class="chart-canvas"></div>
     </div>
   </div>
   <table class="data-table">
@@ -360,7 +360,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
   <div class="chart-row">
     <div class="chart-box" style="grid-column: 1 / -1;">
       <h4>搜索词转化覆盖率趋势</h4>
-      <canvas id="chartDiversity" class="chart-canvas"></canvas>
+      <div id="chartDiversity" class="chart-canvas"></div>
     </div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
