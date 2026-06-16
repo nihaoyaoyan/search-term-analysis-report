@@ -11,6 +11,16 @@
 - 7日支付订单：47单 | 7日支付金额：¥7,604
 - ROI：5.98 | CPA：¥27
 
-## 内容
-- `小红书千帆搜索投放分析报告.html` — 完整可视化分析报告
+## 报告列表
+
+| 报告 | 说明 | 在线查看 |
+|------|------|----------|
+| 小红书千帆搜索投放分析报告 | 30天投放数据完整分析，7大板块13条优化动作 | [🌐 在线查看](https://nihaoyaoyan.github.io/search-term-analysis-report/生鲜水产-小红书千帆搜索分析-20260616/小红书千帆搜索投放分析报告.html) |
+| 关键词投放适配度分析报告 | 2000候选词意图分类+投放实绩交叉验证 | [🌐 在线查看](https://nihaoyaoyan.github.io/search-term-analysis-report/生鲜水产-小红书千帆搜索分析-20260616/关键词投放适配度分析报告.html) |
+| 三文鱼-关键词分析报告 | 1000词独立分析，85%信息型意图 | [🌐 在线查看](https://nihaoyaoyan.github.io/search-term-analysis-report/生鲜水产-小红书千帆搜索分析-20260616/三文鱼-关键词分析报告.html) |
+| 虾仁-关键词分析报告 | 1000词独立分析，76%交易型意图 | [🌐 在线查看](https://nihaoyaoyan.github.io/search-term-analysis-report/生鲜水产-小红书千帆搜索分析-20260616/虾仁-关键词分析报告.html) |
+| 店铺搜索词×投放交叉分析报告 | 7月有机搜索×投放×意图三向交叉 | [🌐 在线查看](https://nihaoyaoyan.github.io/search-term-analysis-report/生鲜水产-小红书千帆搜索分析-20260616/店铺搜索词×投放交叉分析报告.html) |
+| **关键词投放诊断与优化方案** 🆕 | **五步法诊断1,465词，4张核心表格，45个P0+P1行动项** | [🌐 在线查看](https://nihaoyaoyan.github.io/search-term-analysis-report/生鲜水产-小红书千帆搜索分析-20260616/关键词投放诊断与优化方案.html) |
+
+## 数据
 - `data/` — 原始千帆6维报表（账户/计划/创意/笔记/关键词/商品）
