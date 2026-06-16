@@ -1048,7 +1048,7 @@ function switchTab(tabId, btn) {
 // 玺牛生鲜 ECharts
 // ============================================================
 var _xinCharts = [];
-var _xinData = {months:["12月","1月","2月","3月","4月","5月"],revenue:[3473,6443,5127,2507,2189,3317],orders:[40,59,47,24,22,37],ctr:[10.51,11.58,7.51,8.01,9.09,10.91],cvr:[2.62,2.43,4.9,3.08,3.74,4.21],clicks:[1486,2307,959,780,588,878]};
+var _xinData = {months:["12月","1月","2月","3月","4月","5月"],revenue:[3473,6443,5127,2507,2042,3317],orders:[40,59,47,24,21,37],ctr:[11.5,14.43,8.79,9.59,11.57,13.55],cvr:[4.33,4.02,7.83,4.51,5.74,6.86],convTerms:[23,34,31,13,16,20],zeroTerms:[98,135,75,63,51,62],catBeef:[3257,4860,4554,2317,1977,3187],catLamb:[0,1282,240,0,0,0],catPork:[0,125,65,125,65,65],catOther:[216,176,268,65,0,65]};
 
 function _xinSafeInit(id, option) {
   var el = document.getElementById(id);
@@ -1119,6 +1119,63 @@ function _initXinCharts() {
   });
   if (c4) _xinCharts.push(c4);
 
+  // Category Pie (doughnut)
+  var c5 = _xinSafeInit('xinChartPie', {
+    tooltip: { trigger: 'item', formatter: '{b}: ¥{c} ({d}%)', confine: true, backgroundColor: '#fff', borderColor: '#e5e7eb', borderWidth: 1, textStyle: { fontSize: 12 } },
+    legend: { orient: 'vertical', right: 10, top: 'center', textStyle: { fontSize: 12 } },
+    series: [{
+      type: 'pie', radius: ['38%', '62%'], center: ['36%', '50%'],
+      avoidLabelOverlap: true, label: { show: false },
+      emphasis: { label: { show: true, fontSize: 14, fontWeight: 'bold' } },
+      itemStyle: { borderRadius: 4, borderColor: '#fff', borderWidth: 2 },
+      data: [
+        { value: 20152, name: '牛排/牛肉', itemStyle: { color: '#7c3aed' } },
+        { value: 1522, name: '羊肉', itemStyle: { color: '#f59e0b' } },
+        { value: 790, name: '其他/长尾', itemStyle: { color: '#94a3b8' } },
+        { value: 445, name: '猪肉', itemStyle: { color: '#3b82f6' } }
+      ]
+    }]
+  });
+  if (c5) _xinCharts.push(c5);
+
+  // Category Monthly Trend
+  var c6 = _xinSafeInit('xinChartCatTrend', {
+    tooltip: tip,
+    legend: { data: ['牛排/牛肉','羊肉','猪肉','其他'], top: 5, textStyle: { fontSize: 11 } },
+    grid: { left: 50, right: 20, bottom: 30, top: 50, containLabel: true },
+    xAxis: { type: 'category', data: M, axisLabel: al, axisLine: { lineStyle: { color: '#e5e7eb' } }, boundaryGap: false },
+    yAxis: { type: 'value', name: '¥', nameTextStyle: { fontSize: 11 }, axisLabel: al, splitLine: sl },
+    series: [
+      { name: '牛排/牛肉', type: 'line', data: D.catBeef, smooth: true, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#7c3aed', width: 2.5 }, itemStyle: { color: '#7c3aed' }, areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(124,58,237,0.25)' }, { offset: 1, color: 'rgba(124,58,237,0.02)' }] } } },
+      { name: '羊肉', type: 'line', data: D.catLamb, smooth: true, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#f59e0b', width: 2 }, itemStyle: { color: '#f59e0b' }, areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(245,158,11,0.2)' }, { offset: 1, color: 'rgba(245,158,11,0.02)' }] } } },
+      { name: '猪肉', type: 'line', data: D.catPork, smooth: true, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#3b82f6', width: 2 }, itemStyle: { color: '#3b82f6' } },
+      { name: '其他', type: 'line', data: D.catOther, smooth: true, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#94a3b8', width: 1.5, type: 'dashed' }, itemStyle: { color: '#94a3b8' } }
+    ]
+  });
+  if (c6) _xinCharts.push(c6);
+
+  // Conversion Coverage Stack
+  var c7 = _xinSafeInit('xinChartCov', {
+    tooltip: Object.assign({}, tip, {
+      axisPointer: { type: 'shadow' },
+      backgroundColor: '#fff', borderColor: '#e5e7eb', borderWidth: 1,
+      formatter: function(params) {
+        if (!params || params.length < 2) { if (params && params.length === 1) return params[0].axisValue + '<br/>' + params[0].marker + ' ' + params[0].seriesName + ': ' + params[0].value; return ''; }
+        var conv = params[0].value, zero = params[1].value, total = conv + zero;
+        return params[0].axisValue + '<br/>' + params[0].marker + ' 有转化: ' + conv + '<br/>' + params[1].marker + ' 零转化: ' + zero + '<br/><strong>覆盖率: ' + Math.round(conv/total*100) + '%</strong>';
+      }
+    }),
+    legend: { data: ['有转化词','零转化词'], top: 5, textStyle: { fontSize: 12 } },
+    grid: { left: 50, right: 20, bottom: 30, top: 50, containLabel: true },
+    xAxis: { type: 'category', data: M, axisLabel: al, axisLine: { lineStyle: { color: '#e5e7eb' } } },
+    yAxis: { type: 'value', name: '词数', nameTextStyle: { fontSize: 11 }, axisLabel: al, splitLine: sl },
+    series: [
+      { name: '有转化词', type: 'bar', stack: 'cov', data: D.convTerms, itemStyle: { color: '#7c3aed', borderRadius: [4,4,0,0] }, barMaxWidth: 40 },
+      { name: '零转化词', type: 'bar', stack: 'cov', data: D.zeroTerms, itemStyle: { color: '#e5e7eb' }, barMaxWidth: 40 }
+    ]
+  });
+  if (c7) _xinCharts.push(c7);
+
   // Resize handler for xin charts
   window.addEventListener('resize', function() {
     clearTimeout(_resizeTimer);
@@ -1132,10 +1189,10 @@ function _initXinCharts() {
 <div id="tab-xiniushengxian" class="tab-panel" style="display:none;">
 
 <div class="header shop-xiniu">
-  <div class="shop-badge badge-xiniu">🥩 玺牛生鲜<span class="version-tag">v1.0</span></div>
+  <div class="shop-badge badge-xiniu">🥩 玺牛生鲜<span class="version-tag">v2.0</span></div>
   <h1>搜索词分析报告</h1>
   <div class="subtitle">玺牛生鲜 · 小红书生鲜电商 · 搜索关键词策略优化</div>
-  <div class="meta">分析周期：2025年12月 - 2026年5月 · 搜索支付金额占比均值 14.3% · 数据更新时间：<strong>2026年6月16日</strong></div>
+  <div class="meta">分析周期：2025年12月 - 2026年5月 · 共分析 627 条搜索词（275条去重） · 数据更新时间：<strong>2026年6月16日</strong></div>
 </div>
 
 <div class="container">
@@ -1144,30 +1201,30 @@ function _initXinCharts() {
 <div class="kpi-grid">
   <div class="kpi-card">
     <div class="label">6个月搜索营收</div>
-    <div class="value">¥23,056</div>
+    <div class="value">¥22,909</div>
     <div class="change up">峰值月 1月 ¥6,443</div>
   </div>
   <div class="kpi-card">
     <div class="label">搜索支付订单数</div>
-    <div class="value">229</div>
-    <div class="change up">交易买家 225</div>
+    <div class="value">228</div>
+    <div class="change up">交易买家 224 · 客单价 ¥100</div>
   </div>
   <div class="kpi-card">
     <div class="label">平均商品点击率</div>
-    <div class="value">9.8%</div>
-    <div class="change up">累计点击 6,998</div>
+    <div class="value">11.6%</div>
+    <div class="change up">月CTR范围 8.79% - 14.43%</div>
   </div>
   <div class="kpi-card">
     <div class="label">平均搜索转化率</div>
-    <div class="value">3.3%</div>
-    <div class="change down">搜索占总营收 14.3%</div>
+    <div class="value">5.3%</div>
+    <div class="change up">转化覆盖率 17-29%</div>
   </div>
 </div>
 
-<!-- SECTION 1: Trend Charts -->
+<!-- SECTION 1: Revenue & Orders -->
 <div class="section">
   <h2>01 搜索营收与订单趋势</h2>
-  <div class="sec-desc">玺牛生鲜搜索渠道逐月营收与订单量变化趋势。整体体量较小，订单集中在20-60单/月区间，1月为营收峰值。</div>
+  <div class="sec-desc">营收体量偏小（¥2,042-¥6,443/月），订单量在21-59单之间。1月为峰值月（¥6,443），3-4月持续下滑后5月回暖。</div>
   <div class="chart-row">
     <div class="chart-box">
       <h4>搜索营收趋势</h4>
@@ -1183,7 +1240,7 @@ function _initXinCharts() {
 <!-- SECTION 2: CTR & CVR -->
 <div class="section">
   <h2>02 点击率与转化率分析</h2>
-  <div class="sec-desc">CTR整体在7-11%区间波动，优于行业平均水平；CVR在2.4%-4.9%之间，2月和5月表现突出。</div>
+  <div class="sec-desc">CTR走势强劲（8.79%-14.43%），远超行业均值；CVR波动较大（4.02%-7.83%），2月CVR达7.83%表现突出。高CTR说明搜索流量精准度高，但整体曝光明量不足是核心瓶颈。</div>
   <div class="chart-row">
     <div class="chart-box">
       <h4>商品点击率 (CTR)</h4>
@@ -1196,74 +1253,184 @@ function _initXinCharts() {
   </div>
 </div>
 
-<!-- SECTION 3: Insights & Comparison -->
+<!-- SECTION 3: Category Analysis -->
 <div class="section">
-  <h2>03 核心洞察与建议</h2>
-  <div class="sec-desc">基于6个月搜索总览数据，识别玺牛生鲜搜索渠道的关键特征与优化方向。</div>
-
-  <div class="rec-card">
-    <h4>📊 现状：搜索渠道体量偏小，增长不稳定</h4>
-    <p>6个月累计搜索营收仅 ¥23,056，搜索占总营收约14.3%。月均营收 ¥3,842，波动较大（¥2,189 ~ ¥6,443）。</p>
-    <p>对比鲜水湾（同期搜索营收 ¥100,484），玺牛生鲜搜索渠道规模约为其 23%，存在巨大增长空间。</p>
+  <h2>03 品类营收分布</h2>
+  <div class="sec-desc">牛排/牛肉品类占据绝对主导地位（88%），品类集中度过高。羊肉仅占比6.6%，猪肉1.9%，其他品类尚未有效覆盖。</div>
+  <div class="chart-row">
+    <div class="chart-box" style="grid-column:1;">
+      <h4>品类营收饼图</h4>
+      <div class="chart-canvas" id="xinChartPie"></div>
+    </div>
+    <div class="chart-box">
+      <h4>核心品类月度营收趋势</h4>
+      <div class="chart-canvas" id="xinChartCatTrend"></div>
+    </div>
   </div>
-
-  <div class="rec-card">
-    <h4>🔥 优势：CTR和CVR表现不俗</h4>
-    <p>平均CTR 9.8% 和 CVR 3.3% 均处于健康区间。尤其2月CVR达4.9%，说明精准流量转化力强。</p>
-    <p>建议：保持现有高转化词的投入，同时扩量获取更多搜索曝光。</p>
-  </div>
-
-  <div class="rec-card">
-    <h4>⚠️ 风险：冷热不均，缺少持续增长动力</h4>
-    <p>3月、4月营收明显下滑（¥2,507 / ¥2,189），说明搜索渠道缺少稳定的流量来源和爆品支撑。</p>
-    <p>建议：参照鲜水湾的品类增长路径，重点打造1-2个搜索爆品（如牛排、虾仁品类），通过笔记SEO和投放持续引流。</p>
-  </div>
-
-  <div class="rec-card">
-    <h4>🚀 增长策略</h4>
-    <p>① <strong>扩品增词</strong>：当前搜索覆盖词量有限，需扩充牛排、牛肉、虾仁等核心品类词的笔记。</p>
-    <p>② <strong>笔记矩阵</strong>：每周发布3-5篇含精准关键词的种草笔记，覆盖"牛排怎么煎""虾仁推荐""牛肉减脂餐"等场景。</p>
-    <p>③ <strong>投放启动</strong>：建议每月投入 ¥500-¥1,000 测试聚光搜索广告，覆盖"牛排""牛肉""虾仁""减脂"等核心关键词。</p>
-    <p>④ <strong>数据闭环</strong>：获取逐搜索词级数据后，进行更精细的关键词分析和否定词管理。</p>
-  </div>
-
-  <h3>鲜水湾 vs 玺牛生鲜 搜索渠道对比</h3>
+  <!-- Category Detail Table -->
+  <h3 style="margin-top:20px;">品类关键词分解</h3>
   <table class="data-table">
     <thead>
-      <tr><th>指标</th><th class="num">鲜水湾</th><th class="num">玺牛生鲜</th><th class="num">玺牛/鲜水湾</th></tr>
+      <tr><th>品类</th><th class="num">营收</th><th class="num">占比</th><th>核心关键词</th><th class="num">去重词数</th></tr>
     </thead>
     <tbody>
-      <tr><td>6个月搜索营收</td><td class="num highlight">¥100,484</td><td class="num highlight">¥23,056</td><td class="num">23%</td></tr>
-      <tr><td>搜索订单数</td><td class="num">1004</td><td class="num">229</td><td class="num">23%</td></tr>
-      <tr><td>客单价</td><td class="num">¥100</td><td class="num">¥100</td><td class="num">--</td></tr>
-      <tr><td>搜索占总营收比</td><td class="num">--</td><td class="num">14.3%</td><td class="num">--</td></tr>
-      <tr><td>月均搜索词量</td><td class="num">380</td><td class="num good">待获取明细</td><td class="num">--</td></tr>
+      <tr><td>牛排/牛肉</td><td class="num highlight">¥20,152</td><td class="num highlight">88.0%</td><td>牛肋排、牛排骨、牛肋条、牛排、黄膘牛排…</td><td class="num">192</td></tr>
+      <tr><td>羊肉</td><td class="num">¥1,522</td><td class="num">6.6%</td><td>羊小腿、羊腿肉、羊肉、羊膝</td><td class="num">13</td></tr>
+      <tr><td>猪肉</td><td class="num">¥445</td><td class="num">1.9%</td><td>排骨、排骨做法、网购排骨、炖排骨</td><td class="num">36</td></tr>
+      <tr><td>其他/长尾</td><td class="num">¥790</td><td class="num">3.4%</td><td>大草原美食、炖肉类菜谱、蒙古特产</td><td class="num">33</td></tr>
     </tbody>
   </table>
 </div>
 
-<!-- SECTION 4: Monthly Detail -->
+<!-- SECTION 4: Search Term Coverage -->
 <div class="section">
-  <h2>04 月度数据明细</h2>
-  <div class="sec-desc">玺牛生鲜2025年12月至2026年5月搜索渠道月度核心指标。</div>
+  <h2>04 搜索词转化覆盖分析</h2>
+  <div class="sec-desc">整体转化覆盖率仅17-29%，意味着超过70%的搜索词为零转化词。相比鲜水湾（12月12%→5月35%），玺牛生鲜的转化集中度更高，长尾词质量差。</div>
+  <div class="chart-box">
+    <h4>有转化词 vs 零转化词（月度）</h4>
+    <div class="chart-canvas" id="xinChartCov"></div>
+  </div>
+</div>
+
+<!-- SECTION 5: Top Search Terms -->
+<div class="section">
+  <h2>05 高价值搜索词 Top 15</h2>
+  <div class="sec-desc">Top 15词贡献了约 ¥14,155 营收（占比62%），核心词集中在牛肉品类。"牛肋排"以¥3,610稳居榜首。</div>
   <table class="data-table">
     <thead>
-      <tr><th>月份</th><th class="num">搜索营收</th><th class="num">订单数</th><th class="num">买家数</th><th class="num">点击人数</th><th class="num">CTR</th><th class="num">CVR</th><th class="num">搜索占比</th></tr>
+      <tr><th>#</th><th>搜索词</th><th class="num">营收</th><th class="num">订单</th><th class="num">出现月数</th></tr>
     </thead>
     <tbody>
-      <tr><td>12月</td><td class="num highlight">¥3,473</td><td class="num">40</td><td class="num">39</td><td class="num">1,486</td><td class="num good">10.51%</td><td class="num bad">2.62%</td><td class="num">13.88%</td></tr>
-      <tr><td>1月</td><td class="num highlight">¥6,443</td><td class="num">59</td><td class="num">56</td><td class="num">2,307</td><td class="num good">11.58%</td><td class="num bad">2.43%</td><td class="num">5.95%</td></tr>
-      <tr><td>2月</td><td class="num highlight">¥5,127</td><td class="num">47</td><td class="num">47</td><td class="num">959</td><td class="num warn">7.51%</td><td class="num good">4.9%</td><td class="num">17.57%</td></tr>
-      <tr><td>3月</td><td class="num highlight">¥2,507</td><td class="num">24</td><td class="num">24</td><td class="num">780</td><td class="num warn">8.01%</td><td class="num warn">3.08%</td><td class="num">14.82%</td></tr>
-      <tr><td>4月</td><td class="num highlight">¥2,189</td><td class="num">22</td><td class="num">22</td><td class="num">588</td><td class="num good">9.09%</td><td class="num warn">3.74%</td><td class="num">28.68%</td></tr>
-      <tr><td>5月</td><td class="num highlight">¥3,317</td><td class="num">37</td><td class="num">37</td><td class="num">878</td><td class="num good">10.91%</td><td class="num good">4.21%</td><td class="num">14.93%</td></tr>
+      <tr><td>牛肋排</td><td class="num highlight">¥3,610</td><td class="num">38</td><td class="num">6</td></tr>
+<tr><td>牛排骨</td><td class="num highlight">¥1,952</td><td class="num">23</td><td class="num">6</td></tr>
+<tr><td>牛肋条</td><td class="num highlight">¥1,454</td><td class="num">17</td><td class="num">6</td></tr>
+<tr><td>牛排</td><td class="num highlight">¥927</td><td class="num">7</td><td class="num">6</td></tr>
+<tr><td>牛肋条多少钱一斤</td><td class="num highlight">¥881</td><td class="num">1</td><td class="num">2</td></tr>
+<tr><td>黄膘牛排</td><td class="num highlight">¥834</td><td class="num">12</td><td class="num">6</td></tr>
+<tr><td>羊小腿</td><td class="num highlight">¥823</td><td class="num">11</td><td class="num">4</td></tr>
+<tr><td>牛肉</td><td class="num highlight">¥747</td><td class="num">5</td><td class="num">6</td></tr>
+<tr><td>牛肋排的做法</td><td class="num highlight">¥590</td><td class="num">6</td><td class="num">6</td></tr>
+<tr><td>黄膘牛肉</td><td class="num highlight">¥509</td><td class="num">4</td><td class="num">6</td></tr>
+<tr><td>牛肋排推荐店铺</td><td class="num highlight">¥423</td><td class="num">4</td><td class="num">3</td></tr>
+<tr><td>牛肋骨</td><td class="num highlight">¥394</td><td class="num">5</td><td class="num">6</td></tr>
+<tr><td>羊腿肉</td><td class="num highlight">¥371</td><td class="num">2</td><td class="num">4</td></tr>
+<tr><td>科尔沁豪气牛牛</td><td class="num highlight">¥323</td><td class="num">2</td><td class="num">1</td></tr>
+<tr><td>大草原美食</td><td class="num highlight">¥316</td><td class="num">3</td><td class="num">4</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 6: Monthly Detail -->
+<div class="section">
+  <h2>06 月度数据明细</h2>
+  <table class="data-table">
+    <thead>
+      <tr><th>月份</th><th class="num">营收</th><th class="num">订单</th><th class="num">买家</th><th class="num">点击</th><th class="num">CTR</th><th class="num">CVR</th><th class="num">搜索词</th><th class="num">转化/零</th><th class="num">覆盖率</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>12月</td><td class="num highlight">¥3,473</td><td class="num">40</td><td class="num">39</td><td class="num">924</td><td class="num warn">11.5%</td><td class="num warn">4.33%</td><td class="num">121</td><td class="num">23/98</td><td class="num">19.0%</td></tr>
+<tr><td>1月</td><td class="num highlight">¥6,443</td><td class="num">59</td><td class="num">56</td><td class="num">1,467</td><td class="num good">14.43%</td><td class="num warn">4.02%</td><td class="num">169</td><td class="num">34/135</td><td class="num">20.1%</td></tr>
+<tr><td>2月</td><td class="num highlight">¥5,127</td><td class="num">47</td><td class="num">47</td><td class="num">600</td><td class="num bad">8.79%</td><td class="num good">7.83%</td><td class="num">106</td><td class="num">31/75</td><td class="num">29.2%</td></tr>
+<tr><td>3月</td><td class="num highlight">¥2,507</td><td class="num">24</td><td class="num">24</td><td class="num">532</td><td class="num warn">9.59%</td><td class="num warn">4.51%</td><td class="num">76</td><td class="num">13/63</td><td class="num">17.1%</td></tr>
+<tr><td>4月</td><td class="num highlight">¥2,042</td><td class="num">21</td><td class="num">21</td><td class="num">366</td><td class="num warn">11.57%</td><td class="num warn">5.74%</td><td class="num">67</td><td class="num">16/51</td><td class="num">23.9%</td></tr>
+<tr><td>5月</td><td class="num highlight">¥3,317</td><td class="num">37</td><td class="num">37</td><td class="num">539</td><td class="num good">13.55%</td><td class="num good">6.86%</td><td class="num">82</td><td class="num">20/62</td><td class="num">24.4%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 7: Core Insights -->
+<div class="section">
+  <h2>07 核心洞察与诊断</h2>
+
+  <div class="rec-card">
+    <h4>📊 品类过于集中 — 88%营收依赖牛肉</h4>
+    <p>这是最大的结构性风险。一旦牛肉品类流量波动或竞品低价冲击，营收将受严重打击。"牛肋排""牛排骨""牛肋条"三词贡献了31%营收。</p>
+    <div class="impact impact-high">高风险</div>
+  </div>
+
+  <div class="rec-card">
+    <h4>🔥 CTR表现优异 — 搜索流量质量高</h4>
+    <p>月CTR 8.8-14.4%，远高于行业均值（3-5%）。说明玺牛生鲜的商品与用户搜索意图匹配度极高，尤其是在牛肉品类。"黄膘牛排"相关词的CTR尤为突出（20-33%）。</p>
+    <div class="impact impact-opportunity">机会点</div>
+  </div>
+
+  <div class="rec-card">
+    <h4>⚠️ 转化覆盖率低 — 大量长尾词无产出</h4>
+    <p>71-83%的搜索词零转化，意味着每月近百个词产生曝光和点击但不成交。需系统性地进行否定词管理和长尾词质量评估。</p>
+    <div class="impact impact-medium">中等风险</div>
+  </div>
+
+  <div class="rec-card">
+    <h4>📉 3-4月营收锐减 — 季节性波动明显</h4>
+    <p>从1月¥6,443骤降至4月¥2,042（-68%）。羊肉品类1月贡献¥1,282后3-5月归零，说明羊肉是典型的冬季品类。需要在淡季补充新品类（如减脂牛肉、牛排轻食）维持营收。</p>
+    <div class="impact impact-medium">中等风险</div>
+  </div>
+
+  <div class="rec-card">
+    <h4>🚀 与鲜水湾对比：小体量×高转化</h4>
+    <p>玺牛生鲜搜索营收仅¥22.0k（鲜水湾100k的23%），但CTR（11.6% vs 12.9%）和CVR（5.3% vs 7.9%）处于同一量级。核心差距在「曝光量」——曝光不足导致订单量无法放大。</p>
+  </div>
+</div>
+
+<!-- SECTION 8: XHS Keyword Strategy -->
+<div class="section">
+  <h2>08 小红书关键词布局建议</h2>
+  <div class="sec-desc">基于玺牛生鲜"小体量×高转化×牛肉聚焦"的特点，制定内容生产和投放端的关键词策略。</div>
+
+  <h3>🌱 内容生产端 — 笔记关键词架构</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>品类</th><th>关键词类型</th><th>推荐关键词（标题/正文/话题）</th><th class="num">预估搜索量</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>牛排/牛肉</td><td>核心品类词</td><td>""牛排""/""牛肉""/""牛肋排""/""牛肋条""/""黄膘牛排""</td><td class="num">300-500</td></tr>
+      <tr><td>牛排/牛肉</td><td>长尾场景词</td><td>""牛肋排的做法""/""牛排骨怎么炖好吃""/""黄膘牛排怎么做好吃""</td><td class="num">100-200</td></tr>
+      <tr><td>牛排/牛肉</td><td>减脂种草词</td><td>""牛排减脂餐""/""牛肉减脂食谱""/""低卡牛排""</td><td class="num">80-150</td></tr>
+      <tr><td>羊肉</td><td>季节场景词</td><td>""冬天吃羊肉""/""羊小腿做法""/""羊肉去膻""（10-2月集中发布）</td><td class="num">30-50</td></tr>
+      <tr><td>猪肉</td><td>通用品类词</td><td>""排骨""/""网购排骨""/""排骨做法""</td><td class="num">20-40</td></tr>
+    </tbody>
+  </table>
+
+  <h3>📝 笔记写作公式</h3>
+  <div class="rec-card">
+    <p><strong>标题</strong> = 场景词 + 核心品类词 + 痛点词 + 数字锚点</p>
+    <p>示例：📌 ""冬天必炖的牛肋排，香到邻居敲门 | 30分钟懒人做法""</p>
+    <p>示例：📌 ""减脂期狂炫不胖的牛排做法，第3种绝了""</p>
+    <p><strong>正文</strong>：前100字包含核心关键词2-3次，全文关键词密度3-5%</p>
+    <p><strong>话题标签</strong>：#牛排 #美食教程 #减脂餐 #牛肋排做法 #内蒙古牛肉</p>
+  </div>
+
+  <h3>🚀 投放端 — 聚光搜索广告关键词</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>投放类型</th><th>关键词</th><th>出价策略</th><th class="num">建议预算/月</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>核心词（高出价）</td><td>牛排、牛肉、牛肋排、牛排骨、牛肋条</td><td>目标前3位，抢占搜索首页</td><td class="num">¥300-500</td></tr>
+      <tr><td>长尾转化词</td><td>牛肋排的做法、黄膘牛排、牛排减脂餐</td><td>中等出价，精确匹配</td><td class="num">¥200-300</td></tr>
+      <tr><td>竞品截流词</td><td>内蒙古牛肉、科尔沁牛排、淘宝买牛排</td><td>低出价广泛匹配，测试</td><td class="num">¥100-200</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:13px;color:var(--text-secondary);margin-top:8px;">💰 建议总投放预算：<strong>¥600-1,000/月</strong>，占当前搜索营收的18-30%，ROI目标1:3以上。</p>
+
+  <h3>🎯 发布节奏与关键词日历</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>时间节点</th><th>重点品类</th><th>推荐关键词主题</th><th class="num">笔记数/周</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>周一</td><td>牛排/牛肉</td><td>减脂餐（上班带饭场景）</td><td class="num">2</td></tr>
+      <tr><td>周三</td><td>牛排/牛肋排</td><td>美食教程/做法分享</td><td class="num">1-2</td></tr>
+      <tr><td>周五-六</td><td>牛肋排/牛排骨</td><td>家庭聚餐/周末美食</td><td class="num">2</td></tr>
+      <tr><td>10-2月</td><td>羊肉</td><td>冬季暖身羊肉/羊小腿做法</td><td class="num">1</td></tr>
+      <tr><td>大促节点</td><td>全部</td><td>囤肉/冰箱大作战/肉食控</td><td class="num">增量3篇</td></tr>
     </tbody>
   </table>
 </div>
 
 </div><!-- /container -->
 
-<div class="footer">搜索词分析报告 · 玺牛生鲜 · 数据来源：小红书店铺后台 · 生成时间：2026年6月16日</div>
+<div class="footer">搜索词分析报告 · 玺牛生鲜 v2.0 · 数据来源：小红书店铺后台（搜索词明细） · 生成时间：2026年6月16日</div>
 
 </div><!-- /tab-xiniushengxian -->
 
