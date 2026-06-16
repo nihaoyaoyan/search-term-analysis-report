@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鲜水湾 · 店铺搜索词 × 投放关键词 综合分析</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:24px}
+.header{background:linear-gradient(135deg,#0f766e 0%,#0d9488 50%,#14b8a6 100%);color:#fff;padding:42px 28px;text-align:center;border-radius:16px;margin-bottom:24px}
+.header h1{font-size:28px;margin-bottom:6px}
+.header p{opacity:0.9;font-size:14px}
+.header .meta{margin-top:12px;font-size:12px;opacity:0.7}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:28px}
+.kpi-card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,0.06);text-align:center;border-top:3px solid #e2e8f0}
+.kpi-value{font-size:32px;font-weight:800;margin-bottom:4px}
+.kpi-label{font-size:12px;color:#64748b;letter-spacing:0.3px}
+.kpi-sub{font-size:11px;color:#94a3b8;margin-top:4px}
+
+.section{background:#fff;border-radius:12px;padding:24px 28px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.section h2{font-size:20px;margin-bottom:6px;color:#0f172a;border-bottom:2px solid #0d9488;padding-bottom:6px;display:inline-block}
+.section h3{font-size:16px;margin:18px 0 10px;color:#334155}
+
+.alert{padding:14px 18px;border-radius:10px;margin:14px 0;font-size:13px}
+.alert-danger{background:#fee2e2;border-left:4px solid #dc2626;color:#991b1b}
+.alert-warning{background:#fef3c7;border-left:4px solid #f59e0b;color:#92400e}
+.alert-info{background:#dbeafe;border-left:4px solid #3b82f6;color:#1e40af}
+.alert-success{background:#d1fae5;border-left:4px solid #059669;color:#065f46}
+
+table{width:100%;border-collapse:collapse;font-size:12px;margin:12px 0}
+th{background:#f1f5f9;padding:8px 10px;text-align:left;font-weight:600;color:#475569;border-bottom:2px solid #e2e8f0;white-space:nowrap}
+td{padding:7px 10px;border-bottom:1px solid #f1f5f9}
+tr:hover{background:#f8fafc}
+
+.bar-container{background:#e2e8f0;border-radius:6px;height:12px;margin:6px 0 16px;overflow:hidden;display:flex}
+.bar-seg{height:100%}
+.bar-legend{display:flex;gap:16px;font-size:11px;color:#64748b;flex-wrap:wrap}
+
+.insight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;margin:14px 0}
+.insight-card{background:#f8fafc;border-radius:10px;padding:18px;border:1px solid #e2e8f0}
+.insight-card h4{font-size:14px;color:#0f172a;margin-bottom:6px}
+.insight-card p{font-size:12px;color:#64748b}
+
+.big-number{font-size:40px;font-weight:900;color:#0d9488;text-align:center;margin:20px 0}
+
+.action-list{list-style:none;padding:0}
+.action-list li{padding:10px 14px;margin:6px 0;background:#f8fafc;border-radius:8px;border-left:4px solid #e2e8f0;font-size:13px}
+.action-list li.do{border-left-color:#059669}
+.action-list li.stop{border-left-color:#dc2626}
+.action-list li.plan{border-left-color:#3b82f6}
+.action-list li.insight{border-left-color:#8b5cf6}
+
+.footer{text-align:center;padding:20px;color:#94a3b8;font-size:11px}
+@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.insight-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+    <h1>🔬 鲜水湾 · 店铺搜索词 × 投放关键词 综合分析</h1>
+    <p>7个月店铺有机搜索数据（2025.11–2026.05） × 30天千帆投放数据 × 2000词意图分类 三向交叉</p>
+    <div class="meta">分析时间：2026-06-16 ｜ 产品：虾仁 · 三文鱼 · 生蚝 · 减脂餐 ｜ 平台：小红书</div>
+</div>
+
+<!-- KPI -->
+<div class="kpi-grid">
+    <div class="kpi-card" style="border-top-color:#0d9488"><div class="kpi-value" style="color:#0d9488">¥10.2万</div><div class="kpi-label">7个月总营收</div><div class="kpi-sub">1024单</div></div>
+    <div class="kpi-card" style="border-top-color:#f59e0b"><div class="kpi-value" style="color:#f59e0b">1,431</div><div class="kpi-label">店铺有搜索数据的词</div><div class="kpi-sub">7个月累计去重</div></div>
+    <div class="kpi-card" style="border-top-color:#dc2626"><div class="kpi-value" style="color:#dc2626">1352</div><div class="kpi-label">自然搜到但未投放</div><div class="kpi-sub">占94%的巨大缺口</div></div>
+    <div class="kpi-card" style="border-top-color:#3b82f6"><div class="kpi-value" style="color:#3b82f6">79</div><div class="kpi-label">自然+投放重叠词</div><div class="kpi-sub">仅34个词纯投放无自然</div></div>
+    <div class="kpi-card" style="border-top-color:#8b5cf6"><div class="kpi-value" style="color:#8b5cf6">¥1.5万</div><div class="kpi-label">月均营收(近7月)</div><div class="kpi-sub">5月峰值¥4.7万</div></div>
+</div>
+
+<!-- 1. 核心发现 -->
+<div class="section">
+    <h2>🚨 一、核心发现：投放策略与用户真实搜索严重脱节</h2>
+    
+    <div class="alert alert-danger">
+        <strong>⚠️ 最大矛盾：</strong>店铺#1营收词「三文鱼」（¥11,134/60单/6个月活跃）被我们之前的意图分析评为<strong>D级"不推荐"</strong>，且<strong>未在千帆投放中</strong>。但它在店铺自然搜索中持续贡献最高收入。这说明在<strong>小红书平台上的搜索意图与通用搜索不同</strong>——在小红书搜"三文鱼"的用户有很强的购买倾向。
+    </div>
+
+    <div class="insight-grid">
+        <div class="insight-card">
+            <h4>💎 Top 20自然营收词中13个未投放</h4>
+            <p>包括"三文鱼"(¥11,134)、"减脂餐"(¥4,405)、"减脂餐食谱"(¥3,676)、"生蚝"(¥3,112)等超级大词，全部<strong>零广告投入</strong>——这些是已验证能转化的词，不是猜测。</p>
+        </div>
+        <div class="insight-card">
+            <h4>🔀 仅79个词重叠（自然+投放双覆盖）</h4>
+            <p>1,431个自然搜索词中，只有79个在千帆计划中。另外<strong>1,352个词</strong>完全靠自然搜索带来流量和收入——广告根本没有覆盖它们。</p>
+        </div>
+        <div class="insight-card">
+            <h4>📉 34个投放词无自然搜索印证</h4>
+            <p>千帆投了但店铺从未通过该词获得过自然流量的词有34个——这些词的投放效率值得质疑。是在花钱买本不会来的流量。</p>
+        </div>
+        <div class="insight-card">
+            <h4>🔥 "减脂餐"品类正在爆发</h4>
+            <p>4月才大规模出现，仅2个月贡献¥12,232（占12%）。"减脂餐"+"减脂餐食谱"+"减肥餐食谱"+"减脂餐上班族带饭"均<strong>未投放</strong>。</p>
+        </div>
+    </div>
+</div>
+
+<!-- 2. 品类结构 -->
+<div class="section">
+    <h2>📊 二、品类收入结构（7个月累计）</h2>
+    <div class="bar-container">
+        <div class="bar-seg" style="width:19.7%;background:#059669"></div>
+        <div class="bar-seg" style="width:31.1%;background:#e85d3a"></div>
+        <div class="bar-seg" style="width:6.3%;background:#f59e0b"></div>
+        <div class="bar-seg" style="width:42.8%;background:#94a3b8"></div>
+    </div>
+    <div class="bar-legend">
+        <span>🟢 虾仁 ¥2.0万 (20%) · 338词</span>
+        <span>🔴 三文鱼 ¥3.2万 (31%) · 199词</span>
+        <span>🟡 生蚝 ¥6.5千 (6%)</span>
+        <span>⚪ 其他 ¥4.4万 (43%)</span>
+    </div>
+    <p style="font-size:13px;color:#64748b;margin-top:8px">
+        ⚡ <strong>关键洞察：</strong>三文鱼以199个词贡献31%营收，词均效率¥159/词（虾仁¥59/词）。但只有199个三文鱼相关词在自然搜索中出现，之前我们分析了1,000个候选词——意味着还有<strong>800+个三文鱼词从未被用户搜到过</strong>，这印证了三文鱼「教育型市场」的判断。
+    </p>
+</div>
+
+<!-- 3. 月度趋势 -->
+<div class="section">
+    <h2>📈 三、月度营收趋势</h2>
+    <table>
+        <tr><th>月份</th><th>搜索词数</th><th>总营收</th><th>虾仁营收</th><th>三文鱼营收</th><th>订单数</th><th>环比增长</th></tr>
+    </table>
+    <table>
+        <tr><td><strong>2025-11</strong></td><td>91</td><td style="text-align:right">¥1.4千</td><td style="text-align:right">¥210</td><td style="text-align:right">¥0</td><td style="text-align:right">20</td><td style="text-align:right;color:#dc2626">-97%</td></tr><tr><td><strong>2025-12</strong></td><td>172</td><td style="text-align:right">¥3.5千</td><td style="text-align:right">¥70</td><td style="text-align:right">¥1.2千</td><td style="text-align:right">34</td><td style="text-align:right;color:#059669">+156%</td></tr><tr><td><strong>2026-01</strong></td><td>224</td><td style="text-align:right">¥3.0千</td><td style="text-align:right">¥421</td><td style="text-align:right">¥0</td><td style="text-align:right">36</td><td style="text-align:right;color:#dc2626">+-16%</td></tr><tr><td><strong>2026-02</strong></td><td>260</td><td style="text-align:right">¥7.3千</td><td style="text-align:right">¥1.9千</td><td style="text-align:right">¥4.5千</td><td style="text-align:right">40</td><td style="text-align:right;color:#059669">+146%</td></tr><tr><td><strong>2026-03</strong></td><td>261</td><td style="text-align:right">¥5.1千</td><td style="text-align:right">¥1.4千</td><td style="text-align:right">¥2.6千</td><td style="text-align:right">53</td><td style="text-align:right;color:#dc2626">+-30%</td></tr><tr><td><strong>2026-04</strong></td><td>471</td><td style="text-align:right">¥3.4万</td><td style="text-align:right">¥8.5千</td><td style="text-align:right">¥1.6万</td><td style="text-align:right">280</td><td style="text-align:right;color:#059669">+566%</td></tr><tr><td><strong>2026-05</strong></td><td>894</td><td style="text-align:right">¥4.7万</td><td style="text-align:right">¥7.6千</td><td style="text-align:right">¥7.3千</td><td style="text-align:right">561</td><td style="text-align:right;color:#059669">+38%</td></tr>
+    </table>
+    <div class="alert alert-success">
+        📈 4-5月爆发式增长：搜索词从261→894（+242%），营收从¥5,137→¥47,335（+821%）。4月的增长主力是三文鱼（¥16,029），5月三文鱼回落但虾仁和减脂餐接棒。
+    </div>
+</div>
+
+<!-- 4. TOP30 -->
+<div class="section">
+    <h2>🏆 四、店铺自然搜索 TOP30 高营收词 × 投放状态</h2>
+    <table>
+        <tr><th>#</th><th>搜索词</th><th>营收</th><th>订单</th><th>曝光</th><th>CTR</th><th>CVR</th><th>投放状态</th><th>意图</th><th>分级</th></tr>
+        <tr><td>1</td><td><strong>三文鱼</strong></td><td style="text-align:right">¥1.1万</td><td style="text-align:right">60</td><td style="text-align:right">7.1千</td><td style="text-align:right">17.6%</td><td style="text-align:right">4.8%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>informational</td><td style="color:#dc2626;font-weight:600">D</td></tr><tr><td>2</td><td><strong>减脂餐</strong></td><td style="text-align:right">¥4.4千</td><td style="text-align:right">57</td><td style="text-align:right">7.8千</td><td style="text-align:right">11.2%</td><td style="text-align:right">6.5%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>3</td><td><strong>减脂餐食谱</strong></td><td style="text-align:right">¥3.7千</td><td style="text-align:right">49</td><td style="text-align:right">4.7千</td><td style="text-align:right">14.7%</td><td style="text-align:right">7.2%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>4</td><td><strong>虾</strong></td><td style="text-align:right">¥3.3千</td><td style="text-align:right">38</td><td style="text-align:right">5.6千</td><td style="text-align:right">13.3%</td><td style="text-align:right">5.1%</td><td><span style="color:#059669;font-weight:600">✅ 已投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>5</td><td><strong>生蚝</strong></td><td style="text-align:right">¥3.1千</td><td style="text-align:right">39</td><td style="text-align:right">8.2千</td><td style="text-align:right">11.6%</td><td style="text-align:right">4.1%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>6</td><td><strong>鲅鱼</strong></td><td style="text-align:right">¥2.0千</td><td style="text-align:right">11</td><td style="text-align:right">1.6千</td><td style="text-align:right">21.0%</td><td style="text-align:right">3.4%</td><td><span style="color:#059669;font-weight:600">✅ 已投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>7</td><td><strong>虾仁推荐网购</strong></td><td style="text-align:right">¥1.9千</td><td style="text-align:right">21</td><td style="text-align:right">982</td><td style="text-align:right">33.4%</td><td style="text-align:right">6.4%</td><td><span style="color:#059669;font-weight:600">✅ 已投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>8</td><td><strong>三文鱼怎么做好吃</strong></td><td style="text-align:right">¥1.5千</td><td style="text-align:right">13</td><td style="text-align:right">1.5千</td><td style="text-align:right">21.3%</td><td style="text-align:right">4.1%</td><td><span style="color:#059669;font-weight:600">✅ 已投</span></td><td>commercial</td><td style="color:#059669;font-weight:600">A+</td></tr><tr><td>9</td><td><strong>减肥餐食谱</strong></td><td style="text-align:right">¥1.4千</td><td style="text-align:right">19</td><td style="text-align:right">1.7千</td><td style="text-align:right">13.7%</td><td style="text-align:right">8.1%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>10</td><td><strong>减脂餐一日三餐一周食谱</strong></td><td style="text-align:right">¥1.3千</td><td style="text-align:right">16</td><td style="text-align:right">1.5千</td><td style="text-align:right">14.3%</td><td style="text-align:right">7.3%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>11</td><td><strong>盒马虾仁</strong></td><td style="text-align:right">¥1.2千</td><td style="text-align:right">15</td><td style="text-align:right">1.9千</td><td style="text-align:right">11.2%</td><td style="text-align:right">6.9%</td><td><span style="color:#059669;font-weight:600">✅ 已投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>12</td><td><strong>整条三文鱼</strong></td><td style="text-align:right">¥1.1千</td><td style="text-align:right">3</td><td style="text-align:right">248</td><td style="text-align:right">19.4%</td><td style="text-align:right">6.2%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>13</td><td><strong>挪威三文鱼</strong></td><td style="text-align:right">¥1.1千</td><td style="text-align:right">3</td><td style="text-align:right">310</td><td style="text-align:right">21.6%</td><td style="text-align:right">4.5%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>transactional</td><td style="color:#059669;font-weight:600">A+</td></tr><tr><td>14</td><td><strong>虾仁</strong></td><td style="text-align:right">¥966</td><td style="text-align:right">13</td><td style="text-align:right">7.2千</td><td style="text-align:right">4.8%</td><td style="text-align:right">3.8%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>15</td><td><strong>山姆三文鱼</strong></td><td style="text-align:right">¥840</td><td style="text-align:right">5</td><td style="text-align:right">665</td><td style="text-align:right">18.0%</td><td style="text-align:right">4.2%</td><td><span style="color:#059669;font-weight:600">✅ 已投</span></td><td>informational</td><td style="color:#dc2626;font-weight:600">D</td></tr><tr><td>16</td><td><strong>大虾</strong></td><td style="text-align:right">¥790</td><td style="text-align:right">10</td><td style="text-align:right">2.6千</td><td style="text-align:right">11.4%</td><td style="text-align:right">3.4%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>17</td><td><strong>现捞鲅鱼</strong></td><td style="text-align:right">¥764</td><td style="text-align:right">1</td><td style="text-align:right">1</td><td style="text-align:right">100.0%</td><td style="text-align:right">100.0%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>18</td><td><strong>三文鱼轮切</strong></td><td style="text-align:right">¥736</td><td style="text-align:right">2</td><td style="text-align:right">69</td><td style="text-align:right">37.7%</td><td style="text-align:right">7.7%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>19</td><td><strong>三文鱼怎么煎好吃又嫩</strong></td><td style="text-align:right">¥730</td><td style="text-align:right">5</td><td style="text-align:right">641</td><td style="text-align:right">26.5%</td><td style="text-align:right">2.9%</td><td><span style="color:#059669;font-weight:600">✅ 已投</span></td><td>commercial</td><td style="color:#059669;font-weight:600">A+</td></tr><tr><td>20</td><td><strong>青岛鲅鱼</strong></td><td style="text-align:right">¥724</td><td style="text-align:right">4</td><td style="text-align:right">274</td><td style="text-align:right">25.2%</td><td style="text-align:right">5.8%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>21</td><td><strong>鱼切切三文鱼</strong></td><td style="text-align:right">¥696</td><td style="text-align:right">1</td><td style="text-align:right">2</td><td style="text-align:right">50.0%</td><td style="text-align:right">100.0%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>22</td><td><strong>冰虾</strong></td><td style="text-align:right">¥652</td><td style="text-align:right">3</td><td style="text-align:right">357</td><td style="text-align:right">15.7%</td><td style="text-align:right">5.4%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>23</td><td><strong>乳山生蚝</strong></td><td style="text-align:right">¥639</td><td style="text-align:right">8</td><td style="text-align:right">842</td><td style="text-align:right">15.7%</td><td style="text-align:right">6.1%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>24</td><td><strong>煎三文鱼</strong></td><td style="text-align:right">¥632</td><td style="text-align:right">4</td><td style="text-align:right">950</td><td style="text-align:right">24.7%</td><td style="text-align:right">1.7%</td><td><span style="color:#059669;font-weight:600">✅ 已投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>25</td><td><strong>减肥餐</strong></td><td style="text-align:right">¥601</td><td style="text-align:right">7</td><td style="text-align:right">976</td><td style="text-align:right">10.6%</td><td style="text-align:right">6.8%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>26</td><td><strong>甜虾</strong></td><td style="text-align:right">¥594</td><td style="text-align:right">4</td><td style="text-align:right">1.2千</td><td style="text-align:right">8.4%</td><td style="text-align:right">4.0%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>27</td><td><strong>深海鱼是哪些鱼</strong></td><td style="text-align:right">¥577</td><td style="text-align:right">4</td><td style="text-align:right">362</td><td style="text-align:right">19.3%</td><td style="text-align:right">5.7%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>28</td><td><strong>减脂餐上班族带饭</strong></td><td style="text-align:right">¥542</td><td style="text-align:right">7</td><td style="text-align:right">487</td><td style="text-align:right">9.2%</td><td style="text-align:right">15.6%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>29</td><td><strong>减肥食谱</strong></td><td style="text-align:right">¥532</td><td style="text-align:right">6</td><td style="text-align:right">506</td><td style="text-align:right">11.7%</td><td style="text-align:right">10.2%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr><tr><td>30</td><td><strong>青岛鲅鱼 邮寄</strong></td><td style="text-align:right">¥496</td><td style="text-align:right">1</td><td style="text-align:right">1</td><td style="text-align:right">100.0%</td><td style="text-align:right">100.0%</td><td><span style="color:#dc2626;font-weight:600">❌ 未投</span></td><td>—</td><td style="color:#6b7280;font-weight:600">—</td></tr>
+    </table>
+</div>
+
+<!-- 5. 未投放的金矿 -->
+<div class="section">
+    <h2>💎 五、已验证转化但未投放的高价值词 TOP15</h2>
+    <div class="alert alert-info">
+        <strong>核心逻辑：</strong>这些词已经在店铺自然搜索中产生了真实收入——不是「可能转化」，而是<strong>已经转化</strong>。投放这些词是在给已经在运转的引擎加燃料。
+    </div>
+    <table>
+        <tr><th>#</th><th>搜索词</th><th>营收</th><th>订单</th><th>活跃月数</th></tr>
+        <tr><td>1</td><td><strong>三文鱼</strong></td><td style="text-align:right">¥1.1万</td><td style="text-align:right">60</td><td style="text-align:right">6个月</td></tr><tr><td>2</td><td><strong>减脂餐</strong></td><td style="text-align:right">¥4.4千</td><td style="text-align:right">57</td><td style="text-align:right">3个月</td></tr><tr><td>3</td><td><strong>减脂餐食谱</strong></td><td style="text-align:right">¥3.7千</td><td style="text-align:right">49</td><td style="text-align:right">2个月</td></tr><tr><td>4</td><td><strong>生蚝</strong></td><td style="text-align:right">¥3.1千</td><td style="text-align:right">39</td><td style="text-align:right">7个月</td></tr><tr><td>5</td><td><strong>减肥餐食谱</strong></td><td style="text-align:right">¥1.4千</td><td style="text-align:right">19</td><td style="text-align:right">2个月</td></tr><tr><td>6</td><td><strong>减脂餐一日三餐一周食谱</strong></td><td style="text-align:right">¥1.3千</td><td style="text-align:right">16</td><td style="text-align:right">2个月</td></tr><tr><td>7</td><td><strong>整条三文鱼</strong></td><td style="text-align:right">¥1.1千</td><td style="text-align:right">3</td><td style="text-align:right">6个月</td></tr><tr><td>8</td><td><strong>挪威三文鱼</strong></td><td style="text-align:right">¥1.1千</td><td style="text-align:right">3</td><td style="text-align:right">6个月</td></tr><tr><td>9</td><td><strong>虾仁</strong></td><td style="text-align:right">¥966</td><td style="text-align:right">13</td><td style="text-align:right">7个月</td></tr><tr><td>10</td><td><strong>大虾</strong></td><td style="text-align:right">¥790</td><td style="text-align:right">10</td><td style="text-align:right">7个月</td></tr><tr><td>11</td><td><strong>现捞鲅鱼</strong></td><td style="text-align:right">¥764</td><td style="text-align:right">1</td><td style="text-align:right">1个月</td></tr><tr><td>12</td><td><strong>三文鱼轮切</strong></td><td style="text-align:right">¥736</td><td style="text-align:right">2</td><td style="text-align:right">4个月</td></tr><tr><td>13</td><td><strong>青岛鲅鱼</strong></td><td style="text-align:right">¥724</td><td style="text-align:right">4</td><td style="text-align:right">2个月</td></tr><tr><td>14</td><td><strong>鱼切切三文鱼</strong></td><td style="text-align:right">¥696</td><td style="text-align:right">1</td><td style="text-align:right">1个月</td></tr><tr><td>15</td><td><strong>冰虾</strong></td><td style="text-align:right">¥652</td><td style="text-align:right">3</td><td style="text-align:right">5个月</td></tr>
+    </table>
+    <div class="alert alert-warning">
+        💡 这15个词合计贡献<strong>¥3.3万</strong>，全部来自自然搜索，<strong>零广告投入</strong>。如果投放这些词，按保守估计20%增量，即可新增¥6.5千营收。
+    </div>
+</div>
+
+<!-- 6. 浪费的有机流量 -->
+<div class="section">
+    <h2>⚠️ 六、高曝光零转化词（有机搜索也在浪费）</h2>
+    <p style="font-size:13px;color:#64748b">这些词带来了大量曝光但没有产生任何收入——说明产品/内容与搜索意图不匹配。</p>
+    <table>
+        <tr><th>#</th><th>搜索词</th><th>曝光</th><th>点击</th><th>CTR</th></tr>
+        <tr><td>1</td><td>炒虾仁</td><td style="text-align:right">1.8千</td><td style="text-align:right">3</td><td style="text-align:right">0.2%</td></tr><tr><td>2</td><td>虾仁做法大全家常菜</td><td style="text-align:right">1.7千</td><td style="text-align:right">8</td><td style="text-align:right">0.5%</td></tr><tr><td>3</td><td>生蚝做法清蒸几分钟</td><td style="text-align:right">1.4千</td><td style="text-align:right">61</td><td style="text-align:right">4.3%</td></tr><tr><td>4</td><td>生蚝怎么做好吃家常做法</td><td style="text-align:right">1.4千</td><td style="text-align:right">18</td><td style="text-align:right">1.3%</td></tr><tr><td>5</td><td>沉浸式吃巨大生蚝</td><td style="text-align:right">826</td><td style="text-align:right">26</td><td style="text-align:right">3.1%</td></tr><tr><td>6</td><td>虾的做法大全</td><td style="text-align:right">674</td><td style="text-align:right">5</td><td style="text-align:right">0.7%</td></tr><tr><td>7</td><td>虾仁怎么做好吃</td><td style="text-align:right">655</td><td style="text-align:right">6</td><td style="text-align:right">0.9%</td></tr><tr><td>8</td><td>虾仁怎么做</td><td style="text-align:right">593</td><td style="text-align:right">4</td><td style="text-align:right">0.7%</td></tr><tr><td>9</td><td>吃生蚝</td><td style="text-align:right">548</td><td style="text-align:right">13</td><td style="text-align:right">2.4%</td></tr><tr><td>10</td><td>三文鱼整条</td><td style="text-align:right">521</td><td style="text-align:right">58</td><td style="text-align:right">11.1%</td></tr><tr><td>11</td><td>吃巨大生蚝</td><td style="text-align:right">501</td><td style="text-align:right">7</td><td style="text-align:right">1.4%</td></tr>
+    </table>
+</div>
+
+<!-- 7. 策略修正 -->
+<div class="section">
+    <h2>🔄 七、基于店铺真实数据的策略修正</h2>
+
+    <h3>之前的分析结论 vs 店铺数据揭示的真相</h3>
+    <table>
+        <tr><th>之前的判断</th><th>店铺数据揭示</th><th>修正</th></tr>
+        <tr style="background:#fee2e2">
+            <td>「三文鱼」= D级不推荐投放</td>
+            <td>#1营收词，¥11,134/60单，6个月稳定转化</td>
+            <td style="color:#dc2626"><strong>必须投放！</strong>小红书上的搜索意图≠通用搜索。在小红书搜「三文鱼」就是来买的。</td>
+        </tr>
+        <tr style="background:#fee2e2">
+            <td>「虾仁」= A级可投</td>
+            <td>¥966/13单，CTR仅4.8%，效率远低于「虾仁推荐网购」(CTR 33.4%)</td>
+            <td style="color:#dc2626"><strong>裸词效率低</strong>，应投「虾仁推荐网购」「盒马虾仁」等购买意图更强的变体</td>
+        </tr>
+        <tr style="background:#d1fae5">
+            <td>减脂餐未在关键词分析中</td>
+            <td>¥12,232/141单，4-5月爆发增长</td>
+            <td style="color:#059669"><strong>立即纳入核心词包</strong></td>
+        </tr>
+        <tr style="background:#d1fae5">
+            <td>生蚝不在分析范围</td>
+            <td>¥6,463/47单，7个月持续转化</td>
+            <td style="color:#059669"><strong>冷门金矿</strong>，应纳入投放</td>
+        </tr>
+    </table>
+
+    <h3>修正后的投放策略</h3>
+    <ul class="action-list">
+        <li class="do"><strong>【立即投放】已验证高转化词包：</strong>三文鱼、减脂餐、减脂餐食谱、生蚝、挪威三文鱼、虾仁推荐网购、整条三文鱼——7词合计¥22,689营收，全部零广告投入</li>
+        <li class="do"><strong>【扩展投放】减脂餐长尾矩阵：</strong>减肥餐食谱、减脂餐一日三餐一周食谱、减脂餐上班族带饭——已贡献¥7,848</li>
+        <li class="do"><strong>【修正分级】小红书平台意图修正：</strong>在平台上搜索产品裸词（三文鱼/虾仁/生蚝）的用户购买意图远超通用搜索引擎，不应评为D级</li>
+        <li class="stop"><strong>【清理】高曝光零转化词优化：</strong>炒虾仁(1,835曝光0收入)、虾仁做法大全家常菜(1,708曝光0收入)——这些词在有机搜索中也无效</li>
+        <li class="plan"><strong>【测试】34个纯投放词审核：</strong>这些词只有广告曝光没有自然搜索，逐个检查是否在浪费预算</li>
+    </ul>
+</div>
+
+<!-- 8. 执行建议 -->
+<div class="section">
+    <h2>🎯 八、执行优先级路线图</h2>
+    <table>
+        <tr><th>优先级</th><th>动作</th><th>预期效果</th><th>时间</th></tr>
+        <tr style="background:#d1fae5"><td><strong>P0</strong></td><td>建「已验证转化词包」：三文鱼+减脂餐+生蚝+挪威三文鱼+减脂餐食谱+虾仁推荐网购+整条三文鱼</td><td>保护¥22,689已验证营收不被竞品抢走，预期增量30-50%</td><td>本周</td></tr>
+        <tr style="background:#d1fae5"><td><strong>P0</strong></td><td>将851个D级三文鱼信息词加入否定词库（"三文鱼"本身保留！）</td><td>避免信息型查询浪费预算</td><td>本周</td></tr>
+        <tr style="background:#cffafe"><td><strong>P1</strong></td><td>扩展减脂餐词包 + 虾仁购买意图词包</td><td>抓住减脂餐增长趋势</td><td>下周</td></tr>
+        <tr style="background:#fef3c7"><td><strong>P2</strong></td><td>建生蚝/鲅鱼等冷门品类词包</td><td>低成本挖掘小众品类</td><td>两周内</td></tr>
+        <tr style="background:#f3f4f6"><td><strong>P3</strong></td><td>优化高曝光零转化词的落地页/产品匹配</td><td>减少有机流量浪费</td><td>持续</td></tr>
+    </table>
+</div>
+
+<div class="footer">
+    <p>鲜水湾 · 店铺搜索词 × 投放关键词 综合分析 ｜ 2026-06-16</p>
+    <p>数据来源：IMA知识库「鲜水湾商家数据」7个月店铺搜索词 + 千帆30天投放数据 + 2000候选关键词意图分析</p>
+</div>
+</div></body></html>
