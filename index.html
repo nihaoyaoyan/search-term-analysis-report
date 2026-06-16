@@ -192,16 +192,17 @@ body {
 .vio-tag-high { background: var(--amber-bg); color: var(--amber); }
 .vio-tag-mid { background: var(--blue-bg); color: var(--blue); }
 
-/* GLOBAL INFO BAR — 三个 Tab 共享的报告元信息 */
+/* GLOBAL INFO BAR — 三个 Tab 共享的报告元信息（页面底部） */
 .global-info-bar {
   text-align: center;
-  padding: 10px 24px;
+  padding: 16px 24px;
   font-size: 12.5px;
-  color: var(--gray-500);
+  color: var(--gray-400);
   background: #fff;
-  border-bottom: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--border-subtle);
   line-height: 1.8;
   letter-spacing: 0.01em;
+  margin-top: 0;
 }
 .global-info-bar .info-sep {
   display: inline-block;
@@ -675,13 +676,6 @@ body {
   <button class="tab-btn active" data-tab="xianshuiwan" onclick="switchTab('tab-xianshuiwan', this)"><span class="tab-icon">♦</span> 鲜水湾</button>
   <button class="tab-btn" data-tab="xiniushengxian" onclick="switchTab('tab-xiniushengxian', this)"><span class="tab-icon">◆</span> 玺牛生鲜</button>
   <button class="tab-btn" data-tab="violation" onclick="switchTab('tab-violation', this)"><span class="tab-icon">⬥</span> 违规看板</button>
-</div>
-
-<!-- GLOBAL INFO BAR — 三个 Tab 共享 -->
-<div class="global-info-bar">
-  搜索词分析报告 · 生鲜电商搜索广告优化 · Powered by Search Term Analyst Agent
-  <span class="info-sep">|</span>
-  数据来源：搜索词数据(2025年12月 - 2026年5月) · 共分析 2,282 条搜索词
 </div>
 
 <!-- XIANSHUIWAN CONTENT -->
@@ -2657,6 +2651,13 @@ body {
 <div class="footer">搜索词分析报告 · 玺牛生鲜 v2.0 · 数据来源：小红书店铺后台（搜索词明细） · 生成时间：2026年6月16日</div>
 
 </div><!-- /tab-xiniushengxian -->
+
+<!-- GLOBAL INFO BAR — 三个 Tab 共享，位于页面底部 -->
+<div class="global-info-bar">
+  搜索词分析报告 · 生鲜电商搜索广告优化 · Powered by Search Term Analyst Agent
+  <span class="info-sep">|</span>
+  数据来源：搜索词数据(2025年12月 - 2026年5月) · 共分析 2,282 条搜索词
+</div>
 
 </body>
 </html>
