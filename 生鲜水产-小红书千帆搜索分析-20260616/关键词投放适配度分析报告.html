@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生鲜水产 · 小红书搜索关键词投放分析报告</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.6; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+/* Header */
+.header { background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%); color: #fff; padding: 48px 24px; text-align: center; border-radius: 16px; margin-bottom: 24px; }
+.header h1 { font-size: 32px; margin-bottom: 8px; }
+.header p { opacity: 0.9; font-size: 16px; }
+.header .meta { margin-top: 16px; font-size: 13px; opacity: 0.7; }
+
+/* KPI Grid */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.kpi-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center; border-top: 3px solid #e2e8f0; }
+.kpi-card.green { border-top-color: #059669; }
+.kpi-card.amber { border-top-color: #f59e0b; }
+.kpi-card.blue { border-top-color: #3b82f6; }
+.kpi-card.red { border-top-color: #dc2626; }
+.kpi-card.purple { border-top-color: #8b5cf6; }
+.kpi-value { font-size: 36px; font-weight: 800; margin-bottom: 4px; }
+.kpi-label { font-size: 13px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+.kpi-sub { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+
+/* Section */
+.section { background: #fff; border-radius: 12px; padding: 28px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.section h2 { font-size: 22px; margin-bottom: 8px; color: #0f172a; border-bottom: 2px solid #059669; padding-bottom: 8px; display: inline-block; }
+.section h3 { font-size: 18px; margin: 20px 0 12px; color: #334155; }
+.section p { margin-bottom: 12px; color: #475569; }
+
+/* Alert boxes */
+.alert { padding: 16px 20px; border-radius: 10px; margin: 16px 0; font-size: 14px; }
+.alert-success { background: #d1fae5; border-left: 4px solid #059669; color: #065f46; }
+.alert-warning { background: #fef3c7; border-left: 4px solid #f59e0b; color: #92400e; }
+.alert-danger { background: #fee2e2; border-left: 4px solid #dc2626; color: #991b1b; }
+.alert-info { background: #dbeafe; border-left: 4px solid #3b82f6; color: #1e40af; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+th { background: #f1f5f9; padding: 10px 12px; text-align: left; font-weight: 600; color: #475569; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; }
+tr:hover { background: #f8fafc; }
+
+/* Progress bar */
+.bar-container { background: #e2e8f0; border-radius: 6px; height: 8px; margin: 8px 0; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 6px; transition: width 0.4s; }
+.bar-label { font-size: 12px; color: #64748b; display: flex; justify-content: space-between; }
+
+/* Insight cards */
+.insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 16px; margin: 16px 0; }
+.insight-card { background: #f8fafc; border-radius: 10px; padding: 20px; border: 1px solid #e2e8f0; }
+.insight-card h4 { font-size: 15px; color: #0f172a; margin-bottom: 8px; }
+.insight-card p { font-size: 13px; color: #64748b; }
+
+/* Action list */
+.action-list { list-style: none; padding: 0; }
+.action-list li { padding: 12px 16px; margin: 8px 0; background: #f8fafc; border-radius: 8px; border-left: 4px solid #e2e8f0; font-size: 14px; }
+.action-list li.do { border-left-color: #059669; }
+.action-list li.stop { border-left-color: #dc2626; }
+.action-list li.plan { border-left-color: #3b82f6; }
+.action-list li strong { color: #0f172a; }
+
+/* Tag */
+.tag { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; margin: 2px; }
+.tag-green { background: #d1fae5; color: #065f46; }
+.tag-red { background: #fee2e2; color: #991b1b; }
+.tag-amber { background: #fef3c7; color: #92400e; }
+.tag-blue { background: #dbeafe; color: #1e40af; }
+
+.footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; }
+
+@media (max-width: 768px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .insight-grid { grid-template-columns: 1fr; }
+    table { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ============ HEADER ============ -->
+<div class="header">
+    <h1>🐟 生鲜水产 · 搜索关键词投放分析</h1>
+    <p>产品：冷冻虾仁 / 冷冻三文鱼 ｜ 平台：小红书千帆搜索广告 ｜ 2000个候选关键词全面体检</p>
+    <div class="meta">分析时间：2026-06-16 ｜ 数据源：千帆关键词推荐 + 30天投放实绩交叉验证</div>
+</div>
+
+<!-- ============ KPI DASHBOARD ============ -->
+<div class="kpi-grid">
+    <div class="kpi-card green">
+        <div class="kpi-value" style="color:#059669">915</div>
+        <div class="kpi-label">推荐投放 (A+ + A)</div>
+        <div class="kpi-sub">占关键词总数 46%</div>
+    </div>
+    <div class="kpi-card amber">
+        <div class="kpi-value" style="color:#f59e0b">120</div>
+        <div class="kpi-label">强烈推荐 (A+)</div>
+        <div class="kpi-sub">111个尚未投放 · 机会窗口</div>
+    </div>
+    <div class="kpi-card red">
+        <div class="kpi-value" style="color:#dc2626">860</div>
+        <div class="kpi-label">不推荐投放 (D级)</div>
+        <div class="kpi-sub">22个已在浪费预算中</div>
+    </div>
+    <div class="kpi-card blue">
+        <div class="kpi-value" style="color:#3b82f6">432</div>
+        <div class="kpi-label">蓝海词 (低竞争)</div>
+        <div class="kpi-sub">竞争指数低 · 低成本抢占</div>
+    </div>
+    <div class="kpi-card purple">
+        <div class="kpi-value" style="color:#8b5cf6">822</div>
+        <div class="kpi-label">交易型意图词</div>
+        <div class="kpi-sub">直接购买意向 · 41%</div>
+    </div>
+</div>
+
+<!-- ============ 1. 总判: 这2000个词能不能投？ ============ -->
+<div class="section">
+    <h2>📊 一、整体判读：这2000个词能不能投？</h2>
+    
+    <div class="alert alert-success">
+        <strong>✅ 结论：可投。</strong>2000个关键词中，915个（46%）适合搜索广告投放，涵盖月搜索量超900万次。但需要筛选——860个词（43%）不适合，主要为纯信息查询意图。
+    </div>
+
+    <h3>关键词意图分布</h3>
+    <div class="bar-label"><span>🔴 交易型（购买意向）</span><span>822词 · 41%</span></div>
+    <div class="bar-container"><div class="bar-fill" style="width:41%;background:#059669"></div></div>
+
+    <div class="bar-label"><span>🟡 商业型（比较决策）</span><span>318词 · 16%</span></div>
+    <div class="bar-container"><div class="bar-fill" style="width:16%;background:#f59e0b"></div></div>
+
+    <div class="bar-label"><span>🔵 信息型（知识查询）</span><span>860词 · 43%</span></div>
+    <div class="bar-container"><div class="bar-fill" style="width:43%;background:#3b82f6"></div></div>
+
+    <p style="margin-top:16px;font-size:14px;color:#64748b">
+        ⚡ <strong>关键发现：</strong>信息型词占比43%（860词），这些词的用户在「学知识」而非「买东西」。投这类词 = 花钱买无效点击。
+    </p>
+
+    <h3>投放适性分级总览</h3>
+    <table>
+        <tr><th>分级</th><th>含义</th><th>词数</th><th>占比</th><th>总月搜索量</th><th>平均出价</th><th>建议</th></tr>
+        <tr style="background:#d1fae5"><td><strong>A+</strong></td><td>强烈推荐</td><td>120</td><td>6.0%</td><td>592.1万</td><td>¥0.42</td><td>优先全量投放</td></tr>
+        <tr style="background:#cffafe"><td><strong>A</strong></td><td>推荐</td><td>795</td><td>39.8%</td><td>316.9万</td><td>¥0.53</td><td>批量投放,监控ROI</td></tr>
+        <tr style="background:#fef3c7"><td><strong>B</strong></td><td>可投（边际）</td><td>225</td><td>11.2%</td><td>53.4万</td><td>¥0.53</td><td>低出价试投,观察转化</td></tr>
+        <tr style="background:#f3f4f6"><td><strong>D</strong></td><td>不推荐</td><td>860</td><td>43.0%</td><td>594.6万</td><td>¥0.77</td><td>加入否定词,坚决不投</td></tr>
+    </table>
+</div>
+
+<!-- ============ 2. 交叉验证 ============ -->
+<div class="section">
+    <h2>🔄 二、交叉验证：新词 vs 已有投放实绩</h2>
+
+    <div class="insight-grid">
+        <div class="insight-card">
+            <h4>🔗 53个新词已在投放中</h4>
+            <p>新词列表中有53个关键词与当前投放计划重合。其中<span class="tag tag-green">A+级9个</span>表现良好，但<span class="tag tag-red">D级22个</span>正在浪费预算——这些词应尽快否定。</p>
+        </div>
+        <div class="insight-card">
+            <h4>💎 111个A+级黄金词未投放</h4>
+            <p>强烈推荐但尚未投放的关键词有111个，是当前最大的机会窗口。这些词意图精准、搜索量大、出价合理，应优先启动。</p>
+        </div>
+        <div class="insight-card">
+            <h4>📈 已有投放中高ROAS关键词</h4>
+            <p>交叉对比发现，有1个关键词ROAS表现突出。当前投放整体转化效率偏低，优化关键词质量是第一要务。</p>
+        </div>
+        <div class="insight-card">
+            <h4>🔵 432个蓝海词可低成本抢占</h4>
+            <p>竞争指数为「低」的关键词有432个，这些词目前竞价不激烈，平均出价低于同类词30-50%。先发优势明显。</p>
+        </div>
+    </div>
+</div>
+
+<!-- ============ 3. A+ 强烈推荐关键词 ============ -->
+<div class="section">
+    <h2>⭐ 三、A+级强烈推荐关键词 TOP25</h2>
+    <p>这些关键词同时满足：购买意图明确 + 月搜索量大 + 出价合理。应<strong>优先建立词包、全量投放</strong>。</p>
+    
+    <table>
+        <tr><th>#</th><th>关键词</th><th>意图</th><th>分级</th><th>月搜索量</th><th>市场出价</th><th>推荐理由</th></tr>
+        <tr>
+            <td>1</td>
+            <td>虾仁做法大全</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">75.5万</td>
+            <td style="text-align:right;color:#059669">¥0.37</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>2</td>
+            <td>🔵 西兰花炒虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">44.0万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>3</td>
+            <td>三文鱼怎么做好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">36.9万</td>
+            <td style="text-align:right;color:#d97706">¥0.54</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>4</td>
+            <td>虾仁做法大全家常菜</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">31.8万</td>
+            <td style="text-align:right;color:#d97706">¥0.43</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>5</td>
+            <td>🔵 虾仁滑蛋</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">23.9万</td>
+            <td style="text-align:right;color:#059669">¥0.32</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>6</td>
+            <td>虾仁做法</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">23.3万</td>
+            <td style="text-align:right;color:#059669">¥0.36</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>7</td>
+            <td>芦笋炒虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">19.0万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>8</td>
+            <td>🔵 虾仁蒸蛋</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">17.5万</td>
+            <td style="text-align:right;color:#d97706">¥0.49</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>9</td>
+            <td>虾仁怎么炒好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">15.8万</td>
+            <td style="text-align:right;color:#059669">¥0.35</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>10</td>
+            <td>虾仁炒蛋</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">11.5万</td>
+            <td style="text-align:right;color:#d97706">¥0.54</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>11</td>
+            <td>虾仁减脂餐</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">11.3万</td>
+            <td style="text-align:right;color:#d97706">¥0.46</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>12</td>
+            <td>三文鱼怎么煎好吃又嫩</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">10.4万</td>
+            <td style="text-align:right;color:#d97706">¥0.47</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>13</td>
+            <td>山姆虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">9.8万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>14</td>
+            <td>三文鱼头怎么做好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">8.8万</td>
+            <td style="text-align:right;color:#d97706">¥0.41</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>15</td>
+            <td>🔵 西兰花炒虾仁怎么做最好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">8.7万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、高点击</td>
+            
+        </tr><tr>
+            <td>16</td>
+            <td>炒虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">8.4万</td>
+            <td style="text-align:right;color:#059669">¥0.38</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>17</td>
+            <td>三文鱼怎么煎</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">8.0万</td>
+            <td style="text-align:right;color:#dc2626">¥0.75</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>18</td>
+            <td>🔵 黄瓜炒虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">7.5万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>19</td>
+            <td>虾仁炒饭</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">7.0万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>20</td>
+            <td>虾仁炒什么菜</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">5.5万</td>
+            <td style="text-align:right;color:#059669">¥0.34</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>21</td>
+            <td>🔵 西葫芦鸡蛋虾仁饺子</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">5.1万</td>
+            <td style="text-align:right;color:#059669">¥0.31</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>22</td>
+            <td>🔵 虾仁炒西兰花</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">5.0万</td>
+            <td style="text-align:right;color:#059669">¥0.37</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>23</td>
+            <td>虾仁饺子馅怎么调好吃</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">4.6万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>24</td>
+            <td>虾仁辅食</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">4.4万</td>
+            <td style="text-align:right;color:#d97706">¥0.45</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>25</td>
+            <td>虾仁豆腐</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">4.0万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr>
+    </table>
+
+    <div class="alert alert-info">
+        <strong>💡 操作建议：</strong>将这120个A+级关键词作为第一批「核心词包」批量建计划。预期CPC控制在¥0.30-0.50区间，月搜索覆盖近600万次。优先选择其中<span class="tag tag-green">蓝海词</span>标记的低竞争词——它们能以更低价格拿到更多曝光。
+    </div>
+</div>
+
+<!-- ============ 4. A级推荐关键词 ============ -->
+<div class="section">
+    <h2>✅ 四、A级推荐关键词 TOP25</h2>
+    <p>意图良好，搜索量可观。适合作为<strong>第二梯队词包</strong>，用较低出价广泛覆盖。</p>
+    
+    <table>
+        <tr><th>#</th><th>关键词</th><th>意图</th><th>分级</th><th>月搜索量</th><th>市场出价</th><th>推荐理由</th></tr>
+        <tr>
+            <td>1</td>
+            <td>三文鱼减脂餐</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">4.7万</td>
+            <td style="text-align:right;color:#d97706">¥0.47</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>2</td>
+            <td>虾仁怎么做好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">3.4万</td>
+            <td style="text-align:right;color:#059669">¥0.37</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>3</td>
+            <td>三文鱼骨怎么做好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">3.1万</td>
+            <td style="text-align:right;color:#dc2626">¥0.75</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>4</td>
+            <td>冷冻虾仁怎么做好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">3.1万</td>
+            <td style="text-align:right;color:#059669">¥0.37</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>5</td>
+            <td>炒虾仁家常做法</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">3.0万</td>
+            <td style="text-align:right;color:#059669">¥0.39</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>6</td>
+            <td>🔵 黄瓜虾仁怎么炒</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">2.8万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词</td>
+            
+        </tr><tr>
+            <td>7</td>
+            <td>三文鱼宝宝辅食怎么做好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">2.7万</td>
+            <td style="text-align:right;color:#059669">¥0.40</td>
+            <td style="font-size:11px">高点击</td>
+            
+        </tr><tr>
+            <td>8</td>
+            <td>炒虾仁的家常做法</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">2.5万</td>
+            <td style="text-align:right;color:#d97706">¥0.42</td>
+            <td style="font-size:11px"></td>
+            
+        </tr><tr>
+            <td>9</td>
+            <td>虾仁蒸蛋怎么做好吃又嫩</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">2.4万</td>
+            <td style="text-align:right;color:#d97706">¥0.43</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>10</td>
+            <td>虾仁热量</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">2.0万</td>
+            <td style="text-align:right;color:#dc2626">¥1.83</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>11</td>
+            <td>🔵 黄瓜炒虾仁的家常做法</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">2.0万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词</td>
+            
+        </tr><tr>
+            <td>12</td>
+            <td>三文鱼边角料怎么做好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">2.0万</td>
+            <td style="text-align:right;color:#d97706">¥0.46</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>13</td>
+            <td>虾仁辅食做法</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.8万</td>
+            <td style="text-align:right;color:#059669">¥0.38</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>14</td>
+            <td>虾仁炒鸡蛋的做法</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.7万</td>
+            <td style="text-align:right;color:#d97706">¥0.60</td>
+            <td style="font-size:11px"></td>
+            
+        </tr><tr>
+            <td>15</td>
+            <td>🔵 虾仁滑蛋怎么做好吃又嫩</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.6万</td>
+            <td style="text-align:right;color:#059669">¥0.39</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>16</td>
+            <td>🔵 西兰花虾仁怎么炒</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.5万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>17</td>
+            <td>三文鱼辅食做法</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.5万</td>
+            <td style="text-align:right;color:#059669">¥0.40</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>18</td>
+            <td>三文鱼空气炸锅做法</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.5万</td>
+            <td style="text-align:right;color:#d97706">¥0.50</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>19</td>
+            <td>虾仁炒饭做法</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.5万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>20</td>
+            <td>🔵 虾仁西兰花怎么做好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.4万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词</td>
+            
+        </tr><tr>
+            <td>21</td>
+            <td>🔵 西兰花炒虾仁做法</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.4万</td>
+            <td style="text-align:right;color:#059669">¥0.38</td>
+            <td style="font-size:11px">蓝海词、同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>22</td>
+            <td>豆腐虾仁怎么做好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.4万</td>
+            <td style="text-align:right;color:#d97706">¥0.43</td>
+            <td style="font-size:11px">同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>23</td>
+            <td>玉米虾仁怎么炒</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.4万</td>
+            <td style="text-align:right;color:#059669">¥0.38</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>24</td>
+            <td>三文鱼头最好吃的做法大全</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.4万</td>
+            <td style="text-align:right;color:#059669">¥0.37</td>
+            <td style="font-size:11px"></td>
+            
+        </tr><tr>
+            <td>25</td>
+            <td>鸡蛋虾仁怎么炒</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#cffafe;color:#0891b2;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A</span></td>
+            <td style="text-align:right;font-weight:600">1.4万</td>
+            <td style="text-align:right;color:#d97706">¥0.46</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr>
+    </table>
+</div>
+
+<!-- ============ 5. 性价比之王 ============ -->
+<div class="section">
+    <h2>💰 五、性价比之王 TOP20（高搜索量 × 低出价）</h2>
+    <p>这些词月搜索量除以出价的比值最高——<strong>花最少的钱拿最多的曝光</strong>。特别适合预算有限时优先投放。</p>
+    
+    <table>
+        <tr><th>#</th><th>关键词</th><th>意图</th><th>分级</th><th>月搜索量</th><th>市场出价</th><th>推荐理由</th></tr>
+        <tr>
+            <td>1</td>
+            <td>虾仁做法大全</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">75.5万</td>
+            <td style="text-align:right;color:#059669">¥0.37</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>2</td>
+            <td>🔵 西兰花炒虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">44.0万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>3</td>
+            <td>🔵 虾仁滑蛋</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">23.9万</td>
+            <td style="text-align:right;color:#059669">¥0.32</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>4</td>
+            <td>虾仁做法</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">23.3万</td>
+            <td style="text-align:right;color:#059669">¥0.36</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>5</td>
+            <td>芦笋炒虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">19.0万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>6</td>
+            <td>虾仁怎么炒好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">15.8万</td>
+            <td style="text-align:right;color:#059669">¥0.35</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>7</td>
+            <td>山姆虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">9.8万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>8</td>
+            <td>🔵 西兰花炒虾仁怎么做最好吃</td>
+            <td><span style="display:inline-block;background:#fef3c7;color:#f59e0b;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">商业型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">8.7万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、高点击</td>
+            
+        </tr><tr>
+            <td>9</td>
+            <td>🔵 黄瓜炒虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">7.5万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>10</td>
+            <td>虾仁炒饭</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">7.0万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>11</td>
+            <td>炒虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">8.4万</td>
+            <td style="text-align:right;color:#059669">¥0.38</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>12</td>
+            <td>🔵 西葫芦鸡蛋虾仁饺子</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">5.1万</td>
+            <td style="text-align:right;color:#059669">¥0.31</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>13</td>
+            <td>虾仁炒什么菜</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">5.5万</td>
+            <td style="text-align:right;color:#059669">¥0.34</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>14</td>
+            <td>虾仁饺子馅怎么调好吃</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">4.6万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>15</td>
+            <td>🔵 虾仁炒西兰花</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">5.0万</td>
+            <td style="text-align:right;color:#059669">¥0.37</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>16</td>
+            <td>虾仁豆腐</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">4.0万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>17</td>
+            <td>🔵 芹菜炒虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">3.7万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>18</td>
+            <td>凉拌虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">3.7万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>19</td>
+            <td>🔵 冬瓜虾仁汤</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">3.5万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>20</td>
+            <td>🔵 荷兰豆炒虾仁</td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#10b981;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">交易型</span></td>
+            <td><span style="display:inline-block;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">A+</span></td>
+            <td style="text-align:right;font-weight:600">3.4万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词</td>
+            
+        </tr>
+    </table>
+</div>
+
+<!-- ============ 6. 蓝海机会 ============ -->
+<div class="section">
+    <h2>🔵 六、蓝海词 TOP20（低竞争 · 先发优势）</h2>
+    <p>来自千帆标记「蓝海词」的关键词，竞争指数为低，意味着目前竞品尚未大量投放。适合作为差异化的突破口。</p>
+    
+    <table>
+        <tr><th>#</th><th>关键词</th><th>意图</th><th>分级</th><th>月搜索量</th><th>市场出价</th><th>推荐理由</th></tr>
+        <tr>
+            <td>1</td>
+            <td>🔵 三文鱼辅食</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">15.9万</td>
+            <td style="text-align:right;color:#059669">¥0.36</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>2</td>
+            <td>🔵 盒马三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">8.7万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>3</td>
+            <td>🔵 三文鱼公主</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">7.2万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词</td>
+            
+        </tr><tr>
+            <td>4</td>
+            <td>🔵 三文鱼色</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">2.9万</td>
+            <td style="text-align:right;color:#dc2626">¥0.85</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>5</td>
+            <td>🔵 三文鱼和虹鳟鱼的区别</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">2.5万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>6</td>
+            <td>🔵 三文鱼边角料</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">2.5万</td>
+            <td style="text-align:right;color:#d97706">¥0.48</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>7</td>
+            <td>🔵 三文鱼薯片塔可</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">2.2万</td>
+            <td style="text-align:right;color:#059669">¥0.32</td>
+            <td style="font-size:11px">蓝海词、同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>8</td>
+            <td>🔵 三文鱼头豆腐汤</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">2.1万</td>
+            <td style="text-align:right;color:#059669">¥0.35</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>9</td>
+            <td>🔵 蒸三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.7万</td>
+            <td style="text-align:right;color:#d97706">¥0.43</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>10</td>
+            <td>🔵 海里家里三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.5万</td>
+            <td style="text-align:right;color:#059669">¥0.38</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>11</td>
+            <td>🔵 三文鱼色的笑话</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.5万</td>
+            <td style="text-align:right;color:#d97706">¥0.49</td>
+            <td style="font-size:11px">蓝海词</td>
+            
+        </tr><tr>
+            <td>12</td>
+            <td>🔵 三文鱼寿司元素</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.5万</td>
+            <td style="text-align:right;color:#d97706">¥0.50</td>
+            <td style="font-size:11px">蓝海词</td>
+            
+        </tr><tr>
+            <td>13</td>
+            <td>🔵 三文鱼头汤</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.4万</td>
+            <td style="text-align:right;color:#d97706">¥0.48</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>14</td>
+            <td>🔵 新疆三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.3万</td>
+            <td style="text-align:right;color:#059669">¥0.34</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>15</td>
+            <td>🔵 三文鱼汤</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.3万</td>
+            <td style="text-align:right;color:#d97706">¥0.57</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>16</td>
+            <td>🔵 gb10136可生食三文鱼标准</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.3万</td>
+            <td style="text-align:right;color:#dc2626">¥0.79</td>
+            <td style="font-size:11px">蓝海词、高点击</td>
+            
+        </tr><tr>
+            <td>17</td>
+            <td>🔵 三文鱼烩饭</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.2万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、高点击</td>
+            
+        </tr><tr>
+            <td>18</td>
+            <td>🔵 枫糖三文鱼到底啥味</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.2万</td>
+            <td style="text-align:right;color:#d97706">¥0.46</td>
+            <td style="font-size:11px">蓝海词、高点击</td>
+            
+        </tr><tr>
+            <td>19</td>
+            <td>🔵 寿司郎三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.2万</td>
+            <td style="text-align:right;color:#d97706">¥0.59</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>20</td>
+            <td>🔵 三文鱼仙人vs米饭仙人</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.2万</td>
+            <td style="text-align:right;color:#d97706">¥0.53</td>
+            <td style="font-size:11px">蓝海词</td>
+            
+        </tr>
+    </table>
+</div>
+
+<!-- ============ 7. D级 不推荐关键词 ============ -->
+<div class="section">
+    <h2>🚫 七、D级不推荐关键词 TOP20（坚决避开）</h2>
+    <div class="alert alert-danger">
+        <strong>⚠️ 重要：</strong>22个D级词正在当前投放计划中消耗预算。这些词的用户意图是「获取信息」而非「购买」，应立即加入否定关键词列表。
+    </div>
+    
+    <table>
+        <tr><th>#</th><th>关键词</th><th>意图</th><th>分级</th><th>月搜索量</th><th>市场出价</th><th>推荐理由</th></tr>
+        <tr>
+            <td>1</td>
+            <td>三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">68.5万</td>
+            <td style="text-align:right;color:#d97706">¥0.63</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>2</td>
+            <td>🔵 三文鱼辅食</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">15.9万</td>
+            <td style="text-align:right;color:#059669">¥0.36</td>
+            <td style="font-size:11px">蓝海词、同行买词</td>
+            
+        </tr><tr>
+            <td>3</td>
+            <td>三文鱼焖饭</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">12.5万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>4</td>
+            <td>三文鱼热量</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">12.4万</td>
+            <td style="text-align:right;color:#d97706">¥0.41</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>5</td>
+            <td>山姆三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">10.9万</td>
+            <td style="text-align:right;color:#d97706">¥0.49</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>6</td>
+            <td>三文鱼做法</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">10.3万</td>
+            <td style="text-align:right;color:#d97706">¥0.52</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>7</td>
+            <td>三文鱼炒饭</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">9.9万</td>
+            <td style="text-align:right;color:#059669">¥0.34</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>8</td>
+            <td>🔵 盒马三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">8.7万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词、同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>9</td>
+            <td>三文鱼波奇饭</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">7.9万</td>
+            <td style="text-align:right;color:#d97706">¥0.53</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>10</td>
+            <td>🔵 三文鱼公主</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">7.2万</td>
+            <td style="text-align:right;color:#059669">¥0.30</td>
+            <td style="font-size:11px">蓝海词</td>
+            
+        </tr><tr>
+            <td>11</td>
+            <td>三文鱼蛋糕</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">7.0万</td>
+            <td style="text-align:right;color:#059669">¥0.36</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>12</td>
+            <td>枫糖三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">6.7万</td>
+            <td style="text-align:right;color:#d97706">¥0.52</td>
+            <td style="font-size:11px">同行买词、高点击</td>
+            
+        </tr><tr>
+            <td>13</td>
+            <td>三文鱼头</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">6.4万</td>
+            <td style="text-align:right;color:#d97706">¥0.42</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>14</td>
+            <td>空气炸锅三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">6.2万</td>
+            <td style="text-align:right;color:#d97706">¥0.48</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>15</td>
+            <td>三文鱼饭</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">6.2万</td>
+            <td style="text-align:right;color:#059669">¥0.39</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>16</td>
+            <td>烤三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">4.7万</td>
+            <td style="text-align:right;color:#d97706">¥0.57</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>17</td>
+            <td>三文鱼水光</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">4.3万</td>
+            <td style="text-align:right;color:#dc2626">¥1.31</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>18</td>
+            <td>三文鱼骨</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">4.2万</td>
+            <td style="text-align:right;color:#dc2626">¥1.08</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>19</td>
+            <td>三文鱼的好处与功效</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">4.0万</td>
+            <td style="text-align:right;color:#dc2626">¥0.91</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr><tr>
+            <td>20</td>
+            <td>美乃滋三文鱼</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">3.6万</td>
+            <td style="text-align:right;color:#d97706">¥0.48</td>
+            <td style="font-size:11px">同行买词</td>
+            
+        </tr>
+    </table>
+
+    <div class="alert alert-warning">
+        <strong>⚠️ 为什么不投这些词？</strong><br>
+        • <strong>信息型意图：</strong>用户搜「三文鱼和虹鳟的区别」是想涨知识，不是想买鱼<br>
+        • <strong>高跳出率：</strong>这类词点击后跳出率高、转化率趋近于零<br>
+        • <strong>浪费预算：</strong>平均出价¥0.77，把钱花在不会转化的人身上
+    </div>
+</div>
+
+<!-- ============ 8. 已投关键词效率 ============ -->
+<div class="section">
+    <h2>📋 八、已投放关键词交叉分析</h2>
+    <p>从新词列表中识别出53个已在当前千帆计划中投放的关键词，按投放数据表现排列：</p>
+    
+    <table>
+        <tr><th>#</th><th>关键词</th><th>意图</th><th>分级</th><th>月搜索量</th><th>出价</th><th>推荐理由</th><th>投放花费</th><th>点击</th><th>ROAS</th></tr>
+        <tr>
+            <td>1</td>
+            <td>三文鱼怎么保存</td>
+            <td><span style="display:inline-block;background:#dbeafe;color:#3b82f6;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600">信息型</span></td>
+            <td><span style="display:inline-block;background:#f3f4f6;color:#9ca3af;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700">D</span></td>
+            <td style="text-align:right;font-weight:600">1.6万</td>
+            <td style="text-align:right;color:#dc2626">¥1.37</td>
+            <td style="font-size:11px">同行买词</td>
+            <td style="text-align:right">¥115</td>
+            <td style="text-align:right">498</td>
+            <td style="text-align:right;color:#059669;font-weight:600">5.9x</td>
+        </tr>
+    </table>
+
+    <p style="font-size:13px;color:#64748b;margin-top:12px">
+        📌 当前已有投放中，多数关键词花费极低（<¥10/30天），说明这些词在现有计划中并未获得充分预算分配。对于A+级已投词，应考虑提高出价抢占更多份额。
+    </p>
+</div>
+
+<!-- ============ 9. 执行计划 ============ -->
+<div class="section">
+    <h2>🎯 九、执行计划：三阶段关键词上线方案</h2>
+
+    <h3>Phase 1 · 立即执行（本周）</h3>
+    <ul class="action-list">
+        <li class="do"><strong>【建包】A+级核心词包：</strong>120个A+级关键词全量建计划，出价¥0.40-0.60，日预算¥200起，观察3天</li>
+        <li class="do"><strong>【建包】蓝海词先行包：</strong>从432个蓝海词中选搜索量>1万的A/A+级词（约80个），以¥0.30低价抢占</li>
+        <li class="stop"><strong>【否定】排除22个D级在投词：</strong>在千帆后台将这些词加入否定关键词，立即止损</li>
+        <li class="stop"><strong>【否定】批量否定D级词：</strong>860个信息型关键词全部加入否定词库，避免未来误投</li>
+    </ul>
+
+    <h3>Phase 2 · 本周内（观察后）</h3>
+    <ul class="action-list">
+        <li class="plan"><strong>【加量】A级词包：</strong>795个A级关键词分批上线，每批100-150词，出价¥0.30-0.50</li>
+        <li class="plan"><strong>【分层】按搜索量分层出价：</strong>月搜索量>5万的词出价+20%，月搜索量<1万的词出价-30%</li>
+        <li class="plan"><strong>【素材】匹配创意：</strong>A+级词优先使用转化率最高的笔记素材（参考上一份投放分析报告）</li>
+    </ul>
+
+    <h3>Phase 3 · 两周内（优化迭代）</h3>
+    <ul class="action-list">
+        <li class="plan"><strong>【筛选】B级词试投：</strong>225个B级边际词中选搜索量>5000的，以¥0.25低出价试投一周</li>
+        <li class="plan"><strong>【迭代】淘汰低效词：</strong>CTR<8%或零转化的词暂停，预算转移到A+级高效词</li>
+        <li class="plan"><strong>【拓展】搜索词拓量：</strong>基于转化词做搜索词报告，发现新的高潜力长尾词</li>
+    </ul>
+</div>
+
+<!-- ============ 10. 产品 × 关键词匹配建议 ============ -->
+<div class="section">
+    <h2>🛒 十、产品 × 关键词匹配策略</h2>
+
+    <div class="insight-grid">
+        <div class="insight-card">
+            <h4>🦐 虾仁 · 核心关键词策略</h4>
+            <p>
+                <span class="tag tag-green">菜谱型</span> 虾仁做法大全、虾仁滑蛋、虾仁蒸蛋、西兰花炒虾仁<br>
+                <span class="tag tag-amber">场景型</span> 虾仁减脂餐、宝宝辅食虾仁<br>
+                <span class="tag tag-blue">采购型</span> 冷冻虾仁、虾仁批发、大虾仁<br>
+                <br>💡 虾仁的搜索高峰在<strong>晚餐时段（17-20点）</strong>和周末，建议提高该时段出价。
+            </p>
+        </div>
+        <div class="insight-card">
+            <h4>🐟 三文鱼 · 核心关键词策略</h4>
+            <p>
+                <span class="tag tag-green">食用型</span> 三文鱼怎么做好吃、空气炸锅三文鱼、三文鱼刺身<br>
+                <span class="tag tag-amber">场景型</span> 三文鱼减脂餐、三文鱼辅食<br>
+                <span class="tag tag-blue">采购型</span> 三文鱼中段、挪威三文鱼、冷冻三文鱼<br>
+                <br>💡 三文鱼的搜索高峰在<strong>午餐前后（11-14点）</strong>和健身话题高峰时段（21-23点）。
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div class="footer">
+    <p>生鲜水产 · 小红书千帆搜索关键词分析报告 ｜ 2026-06-16</p>
+    <p>基于2000个候选关键词 + 30天投放实绩交叉验证 ｜ 分级模型：意图识别 × 搜索量 × 出价合理性</p>
+</div>
+
+</div>
+</body>
+</html>
