@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小红书千帆搜索投放分析报告 — 生鲜水产</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+.container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+.header { background: linear-gradient(135deg, #ff6b35, #ff3e6c); color: white; padding: 40px 30px; border-radius: 12px; margin-bottom: 24px; }
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header p { opacity: 0.9; font-size: 14px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 24px; }
+.kpi-card { background: white; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.kpi-card .label { font-size: 13px; color: #888; margin-bottom: 4px; }
+.kpi-card .value { font-size: 26px; font-weight: 700; }
+.kpi-card .sub { font-size: 12px; color: #999; margin-top: 2px; }
+.green { color: #00b578; }
+.red { color: #ff3e6c; }
+.orange { color: #ff6b35; }
+.section { background: white; border-radius: 10px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.section h2 { font-size: 18px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #ff6b35; display: flex; align-items: center; gap: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: #f8f8f8; padding: 10px 8px; text-align: right; font-weight: 600; white-space: nowrap; }
+td { padding: 8px; text-align: right; border-bottom: 1px solid #f0f0f0; }
+th:first-child, td:first-child { text-align: left; }
+th:last-child, td:last-child { text-align: right; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.badge-success { background: #e6f9f0; color: #00b578; }
+.badge-warning { background: #fff3e0; color: #ff6b35; }
+.badge-danger { background: #ffeaea; color: #ff3e6c; }
+.badge-info { background: #e6f0ff; color: #0066ff; }
+.highlight-box { background: #fff8e6; border-left: 4px solid #ff6b35; padding: 16px; border-radius: 4px; margin: 16px 0; }
+.highlight-box h3 { font-size: 15px; margin-bottom: 8px; }
+.highlight-box ul { padding-left: 20px; font-size: 14px; }
+.highlight-box li { margin-bottom: 4px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.insight-block { padding: 16px; border-radius: 8px; background: #fafafa; }
+.insight-block h4 { font-size: 14px; margin-bottom: 8px; color: #ff6b35; }
+.insight-block p { font-size: 13px; color: #555; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+<h1>🔍 小红书千帆·搜索投放分析报告</h1>
+<p>品类：生鲜水产（虾仁 / 三文鱼）| 投放周期：2026.05.17 - 2026.06.15 | 数据来源：千帆后台6维报表</p>
+</div>
+
+<!-- KPI GRID -->
+<div class="kpi-grid">
+<div class="kpi-card">
+<div class="label">💰 总花费</div>
+<div class="value">¥1,272</div>
+<div class="sub">30天累计</div>
+</div>
+<div class="kpi-card">
+<div class="label">📊 展现量</div>
+<div class="value">32,823</div>
+<div class="sub">日均 1,094</div>
+</div>
+<div class="kpi-card">
+<div class="label">👆 点击率</div>
+<div class="value green">12.9%</div>
+<div class="sub">行业优秀水平</div>
+</div>
+<div class="kpi-card">
+<div class="label">🛒 下单ROI</div>
+<div class="value green">6.0</div>
+<div class="sub">7日总支付ROI</div>
+</div>
+<div class="kpi-card">
+<div class="label">📦 支付订单</div>
+<div class="value">47单</div>
+<div class="sub">客单价 ¥162</div>
+</div>
+</div>
+
+<!-- SUB KPI -->
+<div class="kpi-grid">
+<div class="kpi-card">
+<div class="label">平均CPC</div>
+<div class="value" style="font-size:20px;">¥0.30</div>
+</div>
+<div class="kpi-card">
+<div class="label">CPM</div>
+<div class="value" style="font-size:20px;">¥38.74</div>
+</div>
+<div class="kpi-card">
+<div class="label">转化成本</div>
+<div class="value orange" style="font-size:20px;">¥27</div>
+<div class="sub">每单CPA</div>
+</div>
+<div class="kpi-card">
+<div class="label">转化率</div>
+<div class="value green" style="font-size:20px;">1.11%</div>
+<div class="sub">点击→支付</div>
+</div>
+<div class="kpi-card">
+<div class="label">首屏占比</div>
+<div class="value" style="font-size:20px;">24.9%</div>
+<div class="sub">搜索结果首位</div>
+</div>
+</div>
+
+<!-- SECTION 1: OVERALL VERDICT -->
+<div class="section">
+<h2>📈 一、整体判读</h2>
+
+<div class="highlight-box">
+<h3>✅ 核心结论：搜索投放模型已初步跑通，可加大投入</h3>
+<ul>
+<li><strong>ROI 5.98</strong> 远超市面生鲜电商平均（通常 2-4），说明搜索词的购买意图匹配度高</li>
+<li><strong>CTR 12.9%</strong> 极为亮眼——小红书搜索广告的行业均值为 4-8%，你翻了近一倍</li>
+<li><strong>CPC ¥0.30</strong> 在食品生鲜品类中极具竞争力</li>
+<li><strong>全部47单均为新客</strong>，意味着搜索正在持续拉新，不是吃存量</li>
+<li>30天仅 ¥1,272 花费，日均 ¥42，属于试探期，有充足放量空间</li>
+</ul>
+</div>
+
+<div class="grid-2" style="margin-top:16px;">
+<div class="insight-block">
+<h4>🟢 做得好的</h4>
+<p>• 笔记标题精准匹配搜索意图<br>• "购买力"系列标题直击价格敏感用户<br>• 三文鱼整条 SKU 有明显高客单优势<br>• 关键词与商品对应关系清晰</p>
+</div>
+<div class="insight-block">
+<h4>🔴 需要解决的</h4>
+<p>• 超 ¥160 浪费在零转化关键词上<br>• 笔记素材出现疲劳迹象（CTR下滑）<br>• 部分计划 ROI 严重低于平均水平<br>• "智能搭建词包"黑盒占比过高</p>
+</div>
+</div>
+</div>
+
+<!-- SECTION 2: PLAN ANALYSIS -->
+<div class="section">
+<h2>🏗️ 二、计划结构分析</h2>
+<p style="font-size:13px;color:#888;margin-bottom:12px;">共 29 个计划，以下为关键计划表现</p>
+<table>
+<tr>
+<th>计划名称</th><th>花费</th><th>展现</th><th>CTR</th><th>CPC</th><th>7d订单</th><th>7d收入</th><th>ROI</th><th>CPA</th><th>评分</th>
+</tr>
+<tr>
+<td>三文鱼爆款购买潜在需求</td><td>¥319.62</td><td>7,704</td><td>14.36%</td><td>0.29</td><td>8</td><td>¥1,574</td><td>4.92</td><td>¥39.95</td><td><span class="badge badge-success">主力</span></td>
+</tr>
+<tr>
+<td>三文鱼购买意图测试_复制</td><td>¥370.86</td><td>10,186</td><td>10.48%</td><td>0.35</td><td>4</td><td>¥1,072</td><td style="color:#ff3e6c;">2.89</td><td style="color:#ff3e6c;">¥92.71</td><td><span class="badge badge-danger">低效</span></td>
+</tr>
+<tr>
+<td>虾仁搜索</td><td>¥130.02</td><td>2,939</td><td>15.14%</td><td>0.29</td><td>10</td><td>¥985</td><td style="color:#00b578;">7.58</td><td>¥13.00</td><td><span class="badge badge-success">主力</span></td>
+</tr>
+<tr>
+<td>虾仁高购买意图测试_复制roi计划</td><td>¥74.15</td><td>2,179</td><td>12.71%</td><td>0.27</td><td>5</td><td>¥345</td><td>4.65</td><td>¥14.83</td><td><span class="badge badge-info">OK</span></td>
+</tr>
+<tr>
+<td>三文鱼购买意图测试</td><td>¥50.76</td><td>1,265</td><td>10.99%</td><td>0.37</td><td>4</td><td>¥1,232</td><td style="color:#00b578;">24.27</td><td>¥12.69</td><td><span class="badge badge-success">高效</span></td>
+</tr>
+<tr>
+<td>整条三文鱼</td><td>¥30.64</td><td>402</td><td>11.69%</td><td>0.65</td><td>3</td><td>¥804</td><td style="color:#00b578;">26.24</td><td>¥10.21</td><td><span class="badge badge-success">高效</span></td>
+</tr>
+<tr>
+<td>三文鱼搜索关键词_复制</td><td>¥13.61</td><td>416</td><td>11.78%</td><td>0.28</td><td>1</td><td>¥368</td><td style="color:#00b578;">27.04</td><td>¥13.61</td><td><span class="badge badge-success">高效</span></td>
+</tr>
+</table>
+
+<div class="highlight-box" style="margin-top:16px;">
+<h3>🔧 计划优化建议</h3>
+<ul>
+<li><strong>暂停「三文鱼购买意图测试_复制」</strong>：ROI 仅 2.89，CPA 高达 ¥92.71。如果该计划本质和其他高效计划关键词重叠，完全可砍掉</li>
+<li><strong>加投「整条三文鱼」「三文鱼搜索关键词_复制」</strong>：ROI 均 26+，但花费严重不足，单日限预算严重</li>
+<li><strong>虾仁搜索是绝对主力</strong>：10 单撑起虾仁线，建议增开虾仁场景词/痛点词计划</li>
+</ul>
+</div>
+</div>
+
+<!-- SECTION 3: KEYWORD ANALYSIS -->
+<div class="section">
+<h2>🔑 三、关键词效率分析</h2>
+<div class="grid-2">
+<div>
+<h4 style="font-size:14px;color:#00b578;margin-bottom:8px;">🏆 高效词（ROI > 5）</h4>
+<table>
+<tr><th>关键词</th><th>花费</th><th>ROI</th><th>CPA</th></tr>
+<tr><td>智能搭建词包</td><td>¥455.93</td><td>6.30</td><td>¥25.33</td></tr>
+<tr><td>三文鱼网购</td><td>¥378.11</td><td>6.09</td><td>¥47.26</td></tr>
+<tr><td>三文鱼怎么保存</td><td>¥114.85</td><td>5.94</td><td>¥28.71</td></tr>
+<tr><td>虾仁测评</td><td>¥50.83</td><td style="color:#00b578;">9.11</td><td style="color:#00b578;">¥10.17</td></tr>
+<tr><td>虾仁减脂餐</td><td>¥6.19</td><td style="color:#00b578;">20.68</td><td style="color:#00b578;">¥6.19</td></tr>
+<tr><td>煎海鱼</td><td>¥14.36</td><td>4.74</td><td>¥14.36</td></tr>
+<tr><td>鲜虾仁</td><td>¥56.69</td><td>3.65</td><td>¥18.90</td></tr>
+</table>
+</div>
+<div>
+<h4 style="font-size:14px;color:#ff3e6c;margin-bottom:8px;">⚠️ 零转化词（需立即处理）</h4>
+<table>
+<tr><th>关键词</th><th>花费</th><th>点击</th><th>展现</th></tr>
+<tr><td style="color:#ff3e6c;">香煎三文鱼</td><td>¥35.68</td><td>46</td><td>426</td></tr>
+<tr><td style="color:#ff3e6c;">三文鱼推荐</td><td>¥31.78</td><td>118</td><td>923</td></tr>
+<tr><td style="color:#ff3e6c;">减肥餐一周备菜</td><td>¥23.42</td><td>130</td><td>759</td></tr>
+<tr><td style="color:#ff3e6c;">减脂期吃什么</td><td>¥5.07</td><td>28</td><td>157</td></tr>
+<tr><td style="color:#ff3e6c;">虾仁推荐网购</td><td>¥3.70</td><td>9</td><td>44</td></tr>
+<tr><td style="color:#ff3e6c;">三文鱼价格</td><td>¥3.27</td><td>1</td><td>2</td></tr>
+</table>
+<p style="font-size:12px;color:#ff3e6c;margin-top:8px;">合计浪费约 ¥163，占总花费 12.8%</p>
+</div>
+</div>
+
+<div class="highlight-box" style="margin-top:16px;">
+<h3>🧠 关键词策略诊断 & 建议</h3>
+<ul>
+<li><strong>"智能搭建词包"占 36% 预算</strong>（¥456）——这是千帆系统自动拓词，看不到具体词表。建议：要么拆开看看里面有什么词，要么限制它预算，把预算转移给已验证的高ROI精准词</li>
+<li><strong>「香煎三文鱼」「减脂餐」类词不转化</strong>：用户搜的是做法/菜谱，购买意图弱。这类词只能做信息流种草，不适合搜索竞价</li>
+<li><strong>「虾仁测评」超高性价比</strong>（CPA ¥10.17）：用户搜测评 = 已进入决策阶段，建议围绕 "虾仁测评""三文鱼测评" 加词</li>
+<li><strong>低价长尾词机会</strong>：「虾仁减脂餐」（CPA ¥6.19）、「开背虾仁推荐」（CPA ¥4.85）——少量花费带来转化，值得系统拓展</li>
+</ul>
+</div>
+</div>
+
+<!-- SECTION 4: CREATIVE ANALYSIS -->
+<div class="section">
+<h2>📝 四、笔记素材表现</h2>
+<p style="font-size:13px;color:#888;margin-bottom:12px;">分析维度：标题策略 × 转化效果 × 可复用模式</p>
+<table>
+<tr><th>笔记标题</th><th>花费</th><th>展现</th><th>CTR</th><th>订单</th><th>收入</th><th>ROI</th><th>风格</th></tr>
+<tr>
+<td>其实，300块能吃一个月的三文鱼😎</td><td>¥415.08</td><td>10,129</td><td>14.01%</td><td>8</td><td>¥1,574</td><td>3.79</td><td><span class="badge badge-info">价格锚</span></td>
+</tr>
+<tr>
+<td style="color:#00b578;">300来块的购买力，一整条够吃一个月了</td><td>¥197.40</td><td>3,527</td><td>11.79%</td><td><strong>11</strong></td><td style="color:#00b578;">¥2,978</td><td style="color:#00b578;">15.09</td><td><span class="badge badge-success">购买力</span></td>
+</tr>
+<tr>
+<td>感谢315，让我家无添加虾仁又爆单了</td><td>¥186.52</td><td>3,593</td><td>12.75%</td><td>9</td><td>¥798</td><td>4.28</td><td><span class="badge badge-info">信任背
+</span></td>
+</tr>
+<tr>
+<td style="color:#00b578;">真别低估了100来块的购买力，够吃半个月了</td><td>¥49.40</td><td>2,020</td><td>15.45%</td><td>7</td><td>¥542</td><td style="color:#00b578;">10.97</td><td><span class="badge badge-success">购买力</span></td>
+</tr>
+<tr>
+<td style="color:#00b578;">跟爸妈商量好，推出整条三文鱼了</td><td>¥18.16</td><td>668</td><td>9.28%</td><td>1</td><td>¥368</td><td style="color:#00b578;">20.26</td><td><span class="badge badge-success">家庭感</span></td>
+</tr>
+<tr>
+<td style="color:#ff3e6c;">某姆对不起，还是300一整条的更适合我</td><td>¥29.01</td><td>930</td><td>10.43%</td><td style="color:#ff3e6c;">0</td><td>¥0</td><td style="color:#ff3e6c;">0</td><td><span class="badge badge-danger">对标Sam</span></td>
+</tr>
+<tr>
+<td style="color:#ff3e6c;">某姆的品质pxx的价格！</td><td>¥28.80</td><td>1,169</td><td>8.13%</td><td style="color:#ff3e6c;">0</td><td>¥0</td><td style="color:#ff3e6c;">0</td><td><span class="badge badge-danger">对标Sam</span></td>
+</tr>
+</table>
+
+<div class="highlight-box" style="margin-top:16px;">
+<h3>🎨 创意策略洞察</h3>
+<ul>
+<li><strong>「购买力」系标题是最大爆款公式</strong>：ROI 10-15，单篇产出 ¥542-2,978。用户对 "100-300块的购买力能买什么" 有强烈好奇心</li>
+<li><strong>「对比山姆」系全军覆没</strong>（¥57.81 打水漂）：用户不买账 Sam's Club 的对比，可能是信任度不够或受众不对</li>
+<li><strong>「和爸妈/老爸商量」人情味标题</strong>：ROI 20.26，"家庭作坊"人设在小红书香氛食品类极吃香</li>
+<li><strong>素材疲劳迹象</strong>：主投笔记「300块吃一个月」虽然花费最高，但 ROI 仅 3.79，CTR 在下降。需要迭代新角度而不是继续加预算</li>
+</ul>
+</div>
+</div>
+
+<!-- SECTION 5: PRODUCT MIX -->
+<div class="section">
+<h2>🛍️ 五、商品矩阵分析</h2>
+<table>
+<tr><th>商品</th><th>花费</th><th>展现</th><th>CTR</th><th>CPC</th><th>7d订单</th><th>7d收入</th><th>ROI</th><th>CPA</th><th>加购</th></tr>
+<tr>
+<td style="color:#00b578;">整条三文鱼 8斤</td><td>¥521.76</td><td>13,741</td><td>10.76%</td><td>0.35</td><td>13</td><td>¥3,544</td><td style="color:#00b578;">6.79</td><td>¥40.14</td><td>83</td></tr>
+<tr>
+<td>手剥虾仁 5盒装</td><td>¥384.97</td><td>9,676</td><td>14.39%</td><td>0.28</td><td>24</td><td>¥2,020</td><td>5.25</td><td>¥16.04</td><td>79</td></tr>
+<tr>
+<td>三文鱼扒</td><td>¥364.60</td><td>9,340</td><td>14.56%</td><td>0.27</td><td>10</td><td>¥2,040</td><td>5.60</td><td>¥36.46</td><td>76</td></tr>
+</table>
+<div class="grid-2" style="margin-top:16px;">
+<div class="insight-block">
+<h4>🥇 整条三文鱼：高客单明星</h4>
+<p>花费占比 41%，贡献 47% 收入。客单价 ¥273/单，远超虾仁（¥84/单）。ROI 6.79 在三文鱼类目属中上。<br><br><strong>建议：</strong>主攻囤货场景，"够吃一个月"的叙事已经奏效，围绕"一周备菜""一家人的量"继续发散。</p>
+</div>
+<div class="insight-block">
+<h4>🥈 虾仁：高频复购引擎</h4>
+<p>CTR 最高 14.39%，CPA 最低 ¥16.04。24 单是所有 SKU 中最多的。<br><br><strong>建议：</strong>虾仁是拉新入口——低价低决策门槛拉用户进来，后续复购三文鱼。可以考虑虾仁做略亏引流，寄望 LTV。</p>
+</div>
+</div>
+</div>
+
+<!-- SECTION 6: TREND -->
+<div class="section">
+<h2>📉 六、趋势与疲劳预警</h2>
+<div class="highlight-box">
+<ul>
+<li><strong>CTR 下行趋势</strong>：前期 15-17%，后期 10-12%。搜索广告 CTR 下滑 3-5 个点是素材疲劳的信号</li>
+<li><strong>CPC 上升</strong>：前期 ¥0.25，后期 ¥0.35+。可能是竞争加剧（618 前夕）或素材衰退导致质量分下降</li>
+<li><strong>单日波动大</strong>：最好的一天 ROI 29.79（6/14），最差 0（多个周末），说明出价和预算节奏需优化</li>
+<li><strong>日均花费仅 ¥42</strong>：预算太低导致样本不足，很多优化判断缺乏统计显著性</li>
+</ul>
+</div>
+</div>
+
+<!-- SECTION 7: ACTION PLAN -->
+<div class="section" style="border-left: 4px solid #00b578;">
+<h2>🚀 七、立即执行的优化动作</h2>
+
+<h3 style="font-size:15px;color:#ff6b35;margin-top:16px;">本周必做（Stop Doing）</h3>
+<table>
+<tr><th style="width:40px;">#</th><th>动作</th><th>预期效果</th></tr>
+<tr><td>1</td><td><strong>暂停零转化关键词</strong>：香煎三文鱼、三文鱼推荐、减肥餐一周备菜、减脂期吃什么</td><td>月省 ¥160+，ROI 立涨</td></tr>
+<tr><td>2</td><td><strong>关停「三文鱼购买意图测试_复制」计划</strong>（ROI 2.89）</td><td>月省 ¥371，释放给高效计划</td></tr>
+<tr><td>3</td><td><strong>下线山姆对比类笔记</strong>：「某姆的品质pxx的价格」「某姆对不起」等</td><td>月省 ¥58，避免品牌风险</td></tr>
+<tr><td>4</td><td><strong>审查「智能搭建词包」</strong>：要求拆分明细或降低预算占比</td><td>可控性提升，避免黑盒烧钱</td></tr>
+</table>
+
+<h3 style="font-size:15px;color:#00b578;margin-top:20px;">本周必做（Start Doing）</h3>
+<table>
+<tr><th style="width:40px;">#</th><th>动作</th><th>预期效果</th></tr>
+<tr><td>5</td><td><strong>「虾仁测评」「三文鱼测评」类关键词扩量</strong></td><td>高意图词 CPA < ¥15</td></tr>
+<tr><td>6</td><td><strong>加投「购买力」系列新标题</strong>：如"200块的购买力到底能买多少虾仁"</td><td>延续爆款公式，延缓疲劳</td></tr>
+<tr><td>7</td><td><strong>「和老爸/爸妈商量」人情味标题做 3-5 个变体</strong></td><td>ROI 20+ 的素材方向值得复制</td></tr>
+<tr><td>8</td><td><strong>日均预算提到 ¥100-150</strong>，优先给整条三文鱼和虾仁搜索计划</td><td>放量测试，积累足够样本</td></tr>
+<tr><td>9</td><td><strong>开启「三文鱼整条」「虾仁」的搜索词拓展</strong>：保存方法、囤货、一周食谱等</td><td>捕获更多高意图长尾流量</td></tr>
+</table>
+
+<h3 style="font-size:15px;color:#0066ff;margin-top:20px;">两周内规划</h3>
+<table>
+<tr><th style="width:40px;">#</th><th>动作</th></tr>
+<tr><td>10</td><td>千帆后台验证转化事件是否完整回传（后台订单 vs 店铺真实订单对比）</td></tr>
+<tr><td>11</td><td>测 3-5 个全新的素材方向：减脂备餐实拍、开箱测评、烹饪对比</td></tr>
+<tr><td>12</td><td>虾仁和三文鱼互相做交叉销售（买虾仁的推三文鱼，反之亦然）</td></tr>
+<tr><td>13</td><td>尝试信息流广告（非搜索），验证搜索 vs 推荐的获客成本差异</td></tr>
+</table>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:20px;color:#999;font-size:12px;">
+报告生成时间：2026年6月16日 | 数据来源：小红书千帆后台 | 分析维度：账户/计划/创意/笔记/关键词/商品
+</div>
+
+</div>
+</body>
+</html>
