@@ -93,48 +93,125 @@ body {
 
 .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
 
-/* ---- TAB NAVIGATION ---- */
+/* ---- TAB NAVIGATION — Pill Segmented Control ---- */
 .tab-nav {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
-  gap: 4px;
-  margin-bottom: 32px;
-  padding: 4px;
+  gap: 0;
+  margin-bottom: 40px;
+  padding: 5px;
   background: var(--gray-100);
-  border-radius: var(--radius-lg);
-  max-width: 420px;
-  margin-left: auto;
-  margin-right: auto;
+  border-radius: var(--radius-full);
+  max-width: 460px;
+  width: auto;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid var(--border-default);
+  box-shadow:
+    var(--shadow-xs),
+    inset 0 1px 0 rgba(255,255,255,0.6);
 }
 
 .tab-btn {
   flex: 1;
-  padding: 10px 20px;
+  min-width: 160px;
+  padding: 12px 28px;
   font-size: 14px;
   font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.01em;
   border: none;
+  border-radius: var(--radius-full);
   background: transparent;
   cursor: pointer;
   transition: all var(--duration-normal) var(--ease-out);
   color: var(--text-secondary);
-  border-radius: var(--radius-md);
   position: relative;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1.3;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.tab-btn:hover { color: var(--text-primary); }
-.tab-btn.active {
-  background: #fff;
+.tab-btn .tab-icon {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.tab-btn:hover:not(.active) {
   color: var(--text-primary);
-  box-shadow: var(--shadow-sm);
+  background: rgba(255,255,255,0.5);
 }
 
-.tab-panel { display: none; animation: fadeSlideIn var(--duration-slow) var(--ease-out); }
+/* Active states — 鲜水湾橙色 */
+.tab-btn[data-tab="xianshuiwan"].active,
+.tab-btn:first-child.active {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #fff;
+  box-shadow:
+    0 2px 8px rgba(249,115,22,0.35),
+    0 1px 3px rgba(249,115,22,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+  text-shadow: 0 0.5px 0 rgba(0,0,0,0.1);
+}
+
+.tab-btn[data-tab="xianshuiwan"].active:hover,
+.tab-btn:first-child.active:hover {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  box-shadow:
+    0 4px 12px rgba(249,115,22,0.4),
+    0 2px 4px rgba(249,115,22,0.25);
+  transform: translateY(-1px);
+}
+
+.tab-btn[data-tab="xianshuiwan"].active .tab-icon,
+.tab-btn:first-child.active .tab-icon {
+  transform: scale(1.12);
+}
+
+/* Active states — 玺牛生鲜紫色 */
+.tab-btn[data-tab="xiniushengxian"].active,
+.tab-btn:last-child.active {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  color: #fff;
+  box-shadow:
+    0 2px 8px rgba(124,58,237,0.35),
+    0 1px 3px rgba(124,58,237,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+  text-shadow: 0 0.5px 0 rgba(0,0,0,0.1);
+}
+
+.tab-btn[data-tab="xiniushengxian"].active:hover,
+.tab-btn:last-child.active:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
+  box-shadow:
+    0 4px 12px rgba(124,58,237,0.4),
+    0 2px 4px rgba(124,58,237,0.25);
+  transform: translateY(-1px);
+}
+
+.tab-btn[data-tab="xiniushengxian"].active .tab-icon,
+.tab-btn:last-child.active .tab-icon {
+  transform: scale(1.12);
+}
+
+/* Tab panel transitions */
+.tab-panel {
+  display: none;
+  animation: fadeSlideIn var(--duration-slow) var(--ease-out);
+}
 .tab-panel.active { display: block; }
 
 @keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ---- HEADER ---- */
@@ -533,8 +610,8 @@ body {
   .kpi-card .value { font-size: 24px; }
   .chart-row { grid-template-columns: 1fr; }
   .section { padding: 20px; }
-  .tab-nav { max-width: 100%; margin: 0 16px 24px; }
-  .tab-btn { font-size: 13px; padding: 8px 14px; }
+  .tab-nav { max-width: calc(100% - 32px); margin-bottom: 28px; left: auto; transform: none; }
+  .tab-btn { font-size: 13px; padding: 10px 20px; min-width: 140px; gap: 6px; }
   .data-table { font-size: 12px; }
   .data-table thead th,
   .data-table tbody td { padding: 8px 10px; }
@@ -554,8 +631,8 @@ body {
 
 <!-- TAB NAVIGATION -->
 <div class="tab-nav">
-  <button class="tab-btn active" onclick="switchTab('tab-xianshuiwan', this)">🐟 鲜水湾</button>
-  <button class="tab-btn" onclick="switchTab('tab-xiniushengxian', this)">🥩 玺牛生鲜</button>
+  <button class="tab-btn active" data-tab="xianshuiwan" onclick="switchTab('tab-xianshuiwan', this)"><span class="tab-icon">🐟</span> 鲜水湾</button>
+  <button class="tab-btn" data-tab="xiniushengxian" onclick="switchTab('tab-xiniushengxian', this)"><span class="tab-icon">🥩</span> 玺牛生鲜</button>
 </div>
 
 <!-- XIANSHUIWAN CONTENT -->
