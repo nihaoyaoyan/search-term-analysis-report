@@ -93,7 +93,7 @@ zero_conv = merged.groupby('搜索词').agg(
     总曝光=('商卡曝光人数', 'sum'),
     总点击=('商品点击人数', 'sum'),
 ).query('总曝光 >= 30')
-zero_conv['has_conv'] = merged.groupby('搜索词')['总支付金额'].sum() > 0
+zero_conv['has_conv'] = merged.groupby('搜索词')['支付金额'].sum() > 0
 waste_queries = zero_conv[~zero_conv['has_conv']].sort_values('总曝光', ascending=False).head(30)
 
 # Recent gems (Apr/May)
