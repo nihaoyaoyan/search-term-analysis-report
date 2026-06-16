@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>搜索词分析报告 | 鲜水湾 & 玺牛生鲜 | 2025.12 - 2026.05</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%'/><stop offset='100%'/></linearGradient></defs><rect width='32' height='32' rx='6' fill='%23f97316'/><text x='16' y='23' text-anchor='middle' font-size='18' fill='white'>📊</text></svg>" type="image/svg+xml">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23f97316'/><path d='M8 24V12l4-4 4 4v12M18 24V10l4-4 4 4v14M6 26h20v2H6z' fill='white' opacity='.9'/></svg>" type="image/svg+xml">
 <style>
 /* ============================================================
    设计系统 - 搜索词分析报告
@@ -140,9 +140,10 @@ body {
 
 .tab-btn .tab-icon {
   display: inline-block;
-  font-size: 16px;
+  font-size: 10px;
   line-height: 1;
   transition: transform var(--duration-normal) var(--ease-out);
+  opacity: 0.7;
 }
 
 .tab-btn:hover:not(.active) {
@@ -174,6 +175,7 @@ body {
 .tab-btn[data-tab="xianshuiwan"].active .tab-icon,
 .tab-btn:first-child.active .tab-icon {
   transform: scale(1.12);
+  opacity: 1;
 }
 
 /* Active states — 玺牛生鲜紫色 */
@@ -200,6 +202,7 @@ body {
 .tab-btn[data-tab="xiniushengxian"].active .tab-icon,
 .tab-btn:last-child.active .tab-icon {
   transform: scale(1.12);
+  opacity: 1;
 }
 
 /* Tab panel transitions */
@@ -631,8 +634,8 @@ body {
 
 <!-- TAB NAVIGATION -->
 <div class="tab-nav">
-  <button class="tab-btn active" data-tab="xianshuiwan" onclick="switchTab('tab-xianshuiwan', this)"><span class="tab-icon">🐟</span> 鲜水湾</button>
-  <button class="tab-btn" data-tab="xiniushengxian" onclick="switchTab('tab-xiniushengxian', this)"><span class="tab-icon">🥩</span> 玺牛生鲜</button>
+  <button class="tab-btn active" data-tab="xianshuiwan" onclick="switchTab('tab-xianshuiwan', this)"><span class="tab-icon">♦</span> 鲜水湾</button>
+  <button class="tab-btn" data-tab="xiniushengxian" onclick="switchTab('tab-xiniushengxian', this)"><span class="tab-icon">◆</span> 玺牛生鲜</button>
 </div>
 
 <!-- XIANSHUIWAN CONTENT -->
@@ -640,7 +643,7 @@ body {
 
 <!-- HEADER -->
 <div class="header">
-  <div class="shop-badge">🐟 鲜水湾<span class="version-tag">v2.0</span></div>
+  <div class="shop-badge">鲜水湾<span class="version-tag">v2.0</span></div>
   <h1>搜索词分析报告</h1>
   <div class="subtitle">鲜水湾 · 小红书生鲜电商 · 搜索关键词策略优化</div>
   <div class="meta">分析周期：2025年12月 - 2026年5月 · 共分析 2,282 条搜索词 · 数据更新时间：<strong>2026年6月16日</strong></div>
@@ -935,7 +938,7 @@ body {
     </div>
   </div>
   <div style="margin-top:16px;font-size:12px;color:var(--text-secondary);">
-    <strong>📊 新词流入趋势：</strong>搜索词量从12月172条增长至5月894条，每月有大量新搜索词出现（4月环比新增347条，5月环比新增634条）。账户处于快速扩张期。
+    <strong>新词流入趋势：</strong>搜索词量从12月172条增长至5月894条，每月有大量新搜索词出现（4月环比新增347条，5月环比新增634条）。账户处于快速扩张期。
     转化覆盖率从最初的12.2%提升至34.8%，说明关键词策略整体在优化，但仍有65%的搜索词浪费空间。
   </div>
 </div>
@@ -1057,7 +1060,7 @@ body {
           <li><strong>全文核心词密度</strong>控制在 3-5%（约每200字出现1次）</li>
           <li><strong>关联词扩展</strong>：每个核心词搭配 3-5 个语义相关词（如"三文鱼"配"刺身""中段""冰鲜""挪威"）</li>
           <li><strong>用户语言</strong>：使用"囤""冲""绝了""太值了"等小红书高互动词汇</li>
-          <li><strong>结构化</strong>：用 emoji 分段 + 短句，提升可读性和完读率</li>
+          <li><strong>结构化</strong>：用符号分段 + 短句，提升可读性和完读率</li>
         </ul>
       </div>
     </div>
@@ -1175,7 +1178,7 @@ body {
           </td>
         </tr>
         <tr>
-          <td><strong>🐟 三文鱼</strong></td>
+          <td><strong>三文鱼</strong></td>
           <td style="font-size:11px;">
             <span style="color:#16a34a;">种草词：</span>减脂吃三文鱼、三文鱼开箱、空气炸锅三文鱼<br>
             <span style="color:#d97706;">场景词：</span>宝宝辅食三文鱼、三文鱼刺身拼盘<br>
@@ -1302,7 +1305,7 @@ body {
       </ul>
     </div>
     <div style="background:#eff6ff;border-radius:8px;padding:14px;border:1px solid #bfdbfe;">
-      <strong style="color:#1e40af;">📊 小红书关键词效果指标</strong>
+      <strong style="color:#1e40af;">小红书关键词效果指标</strong>
       <ul style="font-size:12px;color:var(--text-secondary);padding-left:16px;margin-top:8px;line-height:2;">
         <li><strong>笔记搜索曝光占比：</strong>目标>30%（即30%的笔记曝光来自搜索）</li>
         <li><strong>搜索词收割率：</strong>投放端每100次搜索展示 → 目标成交>3单</li>
@@ -1707,7 +1710,7 @@ body {
 <div id="tab-xiniushengxian" class="tab-panel">
 
 <div class="header shop-xiniu">
-  <div class="shop-badge badge-xiniu">🥩 玺牛生鲜<span class="version-tag">v2.0</span></div>
+  <div class="shop-badge badge-xiniu">玺牛生鲜<span class="version-tag">v2.0</span></div>
   <h1>搜索词分析报告</h1>
   <div class="subtitle">玺牛生鲜 · 小红书生鲜电商 · 搜索关键词策略优化</div>
   <div class="meta">分析周期：2025年12月 - 2026年5月 · 共分析 627 条搜索词（275条去重） · 数据更新时间：<strong>2026年6月16日</strong></div>
@@ -1861,7 +1864,7 @@ body {
   <h2>07 核心洞察与诊断</h2>
 
   <div class="rec-card">
-    <h4>📊 品类过于集中 — 88%营收依赖牛肉</h4>
+    <h4>品类过于集中 — 88%营收依赖牛肉</h4>
     <p>这是最大的结构性风险。一旦牛肉品类流量波动或竞品低价冲击，营收将受严重打击。"牛肋排""牛排骨""牛肋条"三词贡献了31%营收。</p>
     <div class="impact impact-high">高风险</div>
   </div>
