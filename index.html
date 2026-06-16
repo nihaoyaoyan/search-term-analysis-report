@@ -205,6 +205,38 @@ body {
   opacity: 1;
 }
 
+/* ---- VIOLATION TAB ---- */
+.tab-btn[data-tab="violation"] { color: var(--gray-500); }
+.tab-btn[data-tab="violation"] .tab-icon { color: var(--red); }
+.tab-btn[data-tab="violation"].active {
+  background: var(--red-bg);
+  color: var(--red);
+  box-shadow: var(--shadow-sm);
+}
+.tab-btn[data-tab="violation"].active:hover { background: var(--red-bg); color: var(--red); }
+.tab-btn[data-tab="violation"].active .tab-icon { transform: scale(1.12); opacity: 1; }
+
+.vio-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.vio-kpi-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-xs); border: 1px solid var(--border-subtle); }
+.vio-kpi-card .kpi-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.vio-kpi-card .kpi-value { font-size: 32px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.vio-kpi-card .kpi-value.red { color: var(--red); }
+.vio-kpi-card .kpi-value.amber { color: var(--amber); }
+.vio-kpi-card .kpi-value.blue { color: var(--blue); }
+.vio-kpi-card .kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+.vio-charts-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+.vio-chart-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-xs); border: 1px solid var(--border-subtle); }
+.vio-chart-card.full { grid-column: span 2; }
+.vio-chart-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--text-primary); }
+.vio-chart-box { width: 100%; height: 340px; }
+
+/* signal tags */
+.vio-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.vio-tag-fatal { background: var(--red-bg); color: var(--red); }
+.vio-tag-high { background: var(--amber-bg); color: var(--amber); }
+.vio-tag-mid { background: var(--blue-bg); color: var(--blue); }
+
 /* Tab panel transitions */
 .tab-panel {
   display: none;
@@ -636,6 +668,7 @@ body {
 <div class="tab-nav">
   <button class="tab-btn active" data-tab="xianshuiwan" onclick="switchTab('tab-xianshuiwan', this)"><span class="tab-icon">♦</span> 鲜水湾</button>
   <button class="tab-btn" data-tab="xiniushengxian" onclick="switchTab('tab-xiniushengxian', this)"><span class="tab-icon">◆</span> 玺牛生鲜</button>
+  <button class="tab-btn" data-tab="violation" onclick="switchTab('tab-violation', this)"><span class="tab-icon">⬥</span> 违规看板</button>
 </div>
 
 <!-- XIANSHUIWAN CONTENT -->
@@ -1664,6 +1697,10 @@ body {
       window._xinInited = true;
       requestAnimationFrame(function() { initXinCharts(); });
     }
+    if (tabId === 'tab-violation' && !window._vioInited) {
+      window._vioInited = true;
+      requestAnimationFrame(function() { initVioCharts(); });
+    }
   };
 
   // ============================================================
@@ -1672,7 +1709,7 @@ body {
   window.addEventListener('resize', function() {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function() {
-      var all = charts.concat(xinCharts);
+      var all = charts.concat(xinCharts).concat(window.vioCharts || []);
       for (var i = 0; i < all.length; i++) {
         if (all[i] && !all[i].isDisposed()) {
           try { all[i].resize(); } catch(e) {}
@@ -1690,6 +1727,280 @@ body {
     'https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js'
   ]);
 
+})();
+</script>
+
+<!-- ============================================================
+     VIOLATION DASHBOARD TAB
+     ============================================================ -->
+<div id="tab-violation" class="tab-panel">
+
+<div class="header" style="border-bottom:3px solid var(--red);">
+  <div class="shop-badge" style="background:var(--red-bg);color:var(--red);">违规监测</div>
+  <h1>笔记违规分析看板</h1>
+  <div class="subtitle">小红书店铺笔记 · 违规信号识别与组合风险分析</div>
+  <div class="meta">分析周期：2026-06-16 导出 · 共分析 <strong>1,637</strong> 条笔记（违规 <strong style="color:var(--red);">62</strong> 条，违规率 <strong style="color:var(--red);">3.8%</strong>）</div>
+</div>
+
+<div class="container">
+
+  <!-- KPI Row -->
+  <div class="vio-kpi-grid">
+    <div class="vio-kpi-card">
+      <div class="kpi-label">总笔记数</div>
+      <div class="kpi-value blue">1,637</div>
+      <div class="kpi-sub">4位创作者</div>
+    </div>
+    <div class="vio-kpi-card">
+      <div class="kpi-label">违规笔记</div>
+      <div class="kpi-value red">62</div>
+      <div class="kpi-sub">占比 3.8%</div>
+    </div>
+    <div class="vio-kpi-card">
+      <div class="kpi-label">最高违规率创作者</div>
+      <div class="kpi-value red">7.1%</div>
+      <div class="kpi-sub">菲菲上班吃什么 (26/366)</div>
+    </div>
+    <div class="vio-kpi-card">
+      <div class="kpi-label">三大致命信号组合</div>
+      <div class="kpi-value amber">3</div>
+      <div class="kpi-sub">卖家身份 / 站外导流 / 标题党省略号</div>
+    </div>
+  </div>
+
+  <!-- Insight Cards -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+    <div style="background:#fef2f2;border-radius:var(--radius-md);padding:18px;border-left:4px solid var(--red);">
+      <h4 style="font-size:13px;color:var(--red);margin:0 0 8px;">致命：卖家身份暴露</h4>
+      <p style="font-size:12px;color:#555;margin:0;line-height:1.6;">"感谢小红书 + 我家产品/销量数据" → 命中率 <b style="color:var(--red)">100%</b>。一旦内容读起来像卖家在推广，系统立即判定商业违规。</p>
+    </div>
+    <div style="background:#fef2f2;border-radius:var(--radius-md);padding:18px;border-left:4px solid var(--red);">
+      <h4 style="font-size:13px;color:var(--red);margin:0 0 8px;">致命：站外交易导流</h4>
+      <p style="font-size:12px;color:#555;margin:0;line-height:1.6;">"试吃吗 + 给地址 + 发顺丰" → 命中率 <b style="color:var(--red)">100%</b>。主动索要联系方式、引导脱离平台交易。</p>
+    </div>
+    <div style="background:#fffbeb;border-radius:var(--radius-md);padding:18px;border-left:4px solid var(--amber);">
+      <h4 style="font-size:13px;color:var(--amber);margin:0 0 8px;">高危：英语省略号 + 负面暗示</h4>
+      <p style="font-size:12px;color:#555;margin:0;line-height:1.6;">"......越吃越↓" → 命中率 <b style="color:var(--amber)">100%</b>。系统将英文省略号识别为标题党标记。</p>
+    </div>
+  </div>
+
+  <!-- Charts Row 1 -->
+  <div class="vio-charts-row">
+    <div class="vio-chart-card">
+      <h3>各创作者违规分布</h3>
+      <div class="vio-chart-box" id="vio-chart-creator"></div>
+    </div>
+    <div class="vio-chart-card">
+      <h3>违规信号雷达图</h3>
+      <div class="vio-chart-box" id="vio-chart-signals"></div>
+    </div>
+  </div>
+
+  <!-- Charts Row 2 -->
+  <div class="vio-charts-row">
+    <div class="vio-chart-card">
+      <h3>违规 vs 有效 — 表现对比</h3>
+      <div class="vio-chart-box" id="vio-chart-perf"></div>
+    </div>
+    <div class="vio-chart-card">
+      <h3>违规信号类型分布</h3>
+      <div class="vio-chart-box" id="vio-chart-pie"></div>
+    </div>
+  </div>
+
+  <!-- Signal Risk Matrix -->
+  <div class="vio-chart-card full" style="margin-bottom:24px;">
+    <h3>信号组合风险矩阵</h3>
+    <div style="overflow-x:auto;">
+      <table class="data-table" style="width:100%;">
+        <thead>
+          <tr>
+            <th>风险等级</th><th>信号组合</th><th>出现次数</th><th>违规次数</th><th>命中率</th><th>典型句式</th><th>建议</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge" style="background:var(--red-bg);color:var(--red);">致命</span></td>
+            <td><strong>导流 + 索要个人信息</strong></td>
+            <td class="num">1</td><td class="num">1</td><td class="num bad">100%</td>
+            <td style="font-size:12px;">"试吃吗？给地址就发顺丰"</td>
+            <td style="font-size:11px;color:var(--red);">立即删除</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:var(--red-bg);color:var(--red);">致命</span></td>
+            <td><strong>感谢小红书 + 卖家口吻</strong></td>
+            <td class="num">4</td><td class="num">4</td><td class="num bad">~100%</td>
+            <td style="font-size:12px;">"我家的好货""加购了"</td>
+            <td style="font-size:11px;color:var(--red);">改用消费者视角</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:var(--red-bg);color:var(--red);">致命</span></td>
+            <td><strong>越吃越/代价 + ......省略号</strong></td>
+            <td class="num">3</td><td class="num">3</td><td class="num bad">100%</td>
+            <td style="font-size:12px;">"代价就是......越吃越..."</td>
+            <td style="font-size:11px;color:var(--red);">用中文省略号</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-amber">高危</span></td>
+            <td><strong>感谢小红书 + 品牌(鲜水湾)</strong></td>
+            <td class="num">5</td><td class="num">3</td><td class="num warn">~60%</td>
+            <td style="font-size:12px;">"感谢小红书+鲜水湾虾仁"</td>
+            <td style="font-size:11px;color:var(--amber);">去掉品牌或走报备</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-amber">高危</span></td>
+            <td><strong>夸张情绪 + 品牌导流</strong></td>
+            <td class="num">6</td><td class="num">1</td><td class="num warn">17%</td>
+            <td style="font-size:12px;">"天塌了""惊动了"</td>
+            <td style="font-size:11px;color:var(--amber);">减少极端情绪词</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-amber">高危</span></td>
+            <td><strong>价格 + 购买力 + 品牌</strong></td>
+            <td class="num">19</td><td class="num">3</td><td class="num warn">16%</td>
+            <td style="font-size:12px;">"69元承包一周+鲜水湾"</td>
+            <td style="font-size:11px;color:var(--amber);">去掉价格或品牌</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:var(--blue-bg);color:var(--blue);">中危</span></td>
+            <td><strong>购买力 + 品牌导流</strong></td>
+            <td class="num">47</td><td class="num">5</td><td class="num warn">11%</td>
+            <td style="font-size:12px;">"购买力封神+鲜水湾"</td>
+            <td style="font-size:11px;color:var(--blue);">降低品牌曝光密度</td>
+          </tr>
+          <tr>
+            <td><span class="badge" style="background:var(--blue-bg);color:var(--blue);">中危</span></td>
+            <td><strong>价格 + 省略号悬念</strong></td>
+            <td class="num">7</td><td class="num">1</td><td class="num warn">14%</td>
+            <td style="font-size:12px;">"69元吃到......"</td>
+            <td style="font-size:11px;color:var(--blue);">注意省略号</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Violation Detail List -->
+  <div class="vio-chart-card full" style="margin-bottom:24px;">
+    <h3>62条违规笔记明细（前30条）</h3>
+    <div style="max-height:500px;overflow-y:auto;">
+      <table class="data-table" style="width:100%;font-size:12px;">
+        <thead><tr><th style="width:40px;">#</th><th>标题</th><th style="width:120px;">创作者</th><th style="width:200px;">信号标签</th></tr></thead>
+        <tbody id="vio-list-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">搜索词分析报告 · 违规看板 v1.0 · 数据来源：小红书店铺后台（笔记维度） · 生成时间：2026年6月16日</div>
+
+</div><!-- /tab-violation -->
+
+<script>
+(function(){
+  var vioCharts = window.vioCharts = [];
+
+  var vioList = [
+    {t:'频繁吃虾仁的代价就是......越吃越⬇️⬇️',c:'菲菲上班吃什么',s:[{l:'越吃越/代价',f:1},{l:'省略号',f:1}]},
+    {t:'频繁吃虾仁的代价就是......越吃越⚡️',c:'菲菲上班吃什么',s:[{l:'越吃越/代价',f:1},{l:'省略号',f:1}]},
+    {t:'有姐妹愿意试吃吗？5斤59.9，给地址就发顺丰',c:'婉婉上班吃什么',s:[{l:'导流',f:1},{l:'价格',f:2}]},
+    {t:'感谢小红书，让我家的好货被大家看到',c:'鲜水湾',s:[{l:'感谢小红书',f:1},{l:'品牌',f:2}]},
+    {t:'感谢小红书！我家虾仁24小时100人加购了',c:'鲜水湾',s:[{l:'感谢小红书',f:1},{l:'品牌',f:2},{l:'价格',f:2}]},
+    {t:'感谢小红书，越来越多的人喜欢吃无添加虾仁',c:'鲜水湾',s:[{l:'感谢小红书',f:1},{l:'品牌',f:2}]},
+    {t:'某姆抱歉...你家的三文鱼我找到平替啦',c:'婉婉上班吃什么',s:[{l:'竞品对比',f:2}]},
+    {t:'连吃一周是我的极限，不是它的....',c:'菲菲上班吃什么',s:[{l:'省略号',f:3}]},
+    {t:'这真虾仁！减脂期买过最满意的一次',c:'菲菲上班吃什么',s:[{l:'价格',f:2}]},
+    {t:'如此大的生蚝有人喜欢吃吗？',c:'婉婉上班吃什么',s:[]},
+    {t:'立夏了！花69元承包我一整周上班减脂餐',c:'菲菲上班吃什么',s:[{l:'价格',f:2},{l:'购买力',f:2}]},
+    {t:'感谢小红书！承包了我整年的低卡餐！',c:'婉婉上班吃什么',s:[{l:'感谢小红书',f:1},{l:'购买力',f:2}]},
+    {t:'月薪3800被同事问是不是偷偷涨薪了？！',c:'菲菲上班吃什么',s:[{l:'夸张情绪',f:2}]},
+    {t:'原来长期吃这个虾仁会让人...',c:'婉婉上班吃什么',s:[{l:'越吃越/代价',f:1},{l:'省略号',f:1}]},
+    {t:'很难低估69块钱的购买力，承包一周减脂餐',c:'小柚练后吃什么',s:[{l:'价格',f:2},{l:'购买力',f:2}]},
+    {t:'感谢小红书！让独居党吃到了"细糠"',c:'婉婉上班吃什么',s:[{l:'感谢小红书',f:1}]},
+    {t:'感谢小红书，减脂期买到这么好吃的虾仁',c:'菲菲上班吃什么',s:[{l:'感谢小红书',f:1},{l:'品牌',f:2}]},
+    {t:'翻翻某马虾仁配料表，发现...',c:'鲜水湾',s:[{l:'竞品对比',f:2},{l:'品牌',f:2}]},
+    {t:'年轻人真不能低估10来块钱的购买力',c:'小柚练后吃什么',s:[{l:'价格',f:2},{l:'购买力',f:2}]},
+    {t:'瘦子同事带的饭一天比一天离谱',c:'菲菲上班吃什么',s:[{l:'夸张情绪',f:2}]},
+    {t:'办公室午餐被问爆了 怎么天天吃虾仁',c:'菲菲上班吃什么',s:[{l:'夸张情绪',f:2}]},
+    {t:'感谢小红书！我妈破天荒夸了我一次！！！',c:'菲菲上班吃什么',s:[{l:'感谢小红书',f:1}]},
+    {t:'感谢小红书！一个人吃饭也真的很爱！！！！',c:'小柚练后吃什么',s:[{l:'感谢小红书',f:1}]},
+    {t:'越吃越瘦的快乐，是整条三文鱼给的',c:'鲜水湾',s:[]},
+    {t:'300块能吃一个月的三文鱼，真香',c:'鲜水湾',s:[{l:'价格',f:2}]},
+    {t:'300块左右囤三文鱼，比天天点外卖香多了',c:'鲜水湾',s:[{l:'价格',f:2},{l:'购买力',f:2},{l:'品牌',f:2}]},
+    {t:'100来块够一周的，可以告别外卖了',c:'菲菲上班吃什么',s:[{l:'价格',f:2},{l:'购买力',f:2},{l:'品牌',f:2}]},
+    {t:'上班族带饭党的天塌了又好了！幸亏有...',c:'菲菲上班吃什么',s:[{l:'夸张情绪',f:2},{l:'省略号',f:3}]},
+    {t:'69元5袋虾仁，一餐一包太适合上班带饭了',c:'鲜水湾',s:[{l:'价格',f:2},{l:'品牌',f:2}]},
+    {t:'独居党！69块实现虾仁自由......',c:'小柚练后吃什么',s:[{l:'价格',f:2}]}
+  ];
+
+  function renderVioList(){
+    var h='';
+    vioList.forEach(function(v,i){
+      var tags=v.s.map(function(s){
+        var cls=s.f===1?'vio-tag-fatal':s.f===2?'vio-tag-high':'vio-tag-mid';
+        return '<span class="vio-tag '+cls+'">'+s.l+'</span>';
+      }).join(' ');
+      h+='<tr><td class="num">'+(i+1)+'</td><td>'+v.t+'</td><td>'+v.c+'</td><td>'+tags+'</td></tr>';
+    });
+    var el=document.getElementById('vio-list-body');
+    if(el) el.innerHTML=h;
+  }
+  renderVioList();
+
+  window.initVioCharts = function(){
+    if(window._vioChartsInitd) return;
+    window._vioChartsInitd = true;
+
+    // Chart 1: Creator Bar
+    var c1 = echarts.init(document.getElementById('vio-chart-creator'));
+    c1.setOption({
+      tooltip:{trigger:'axis',formatter:function(p){var totals=[366,325,566,370];return p[0].name+'<br/>违规: <b>'+p[0].value+'</b> / 总计: '+totals[p[0].dataIndex]+'<br/>违规率: <b style=color:#dc2626>'+(p[0].value/totals[p[0].dataIndex]*100).toFixed(1)+'%</b>';}},
+      grid:{left:12,right:20,top:12,bottom:60},
+      xAxis:{type:'category',data:['菲菲上班吃什么','小柚练后吃什么','鲜水湾','婉婉上班吃什么'],axisLabel:{rotate:15,fontSize:11}},
+      yAxis:{type:'value',name:'条数'},
+      series:[{type:'bar',data:[26,18,10,8],itemStyle:{borderRadius:[8,8,0,0],color:'#dc2626'},label:{show:true,position:'top',fontWeight:'bold',fontSize:12}}]
+    });
+    vioCharts.push(c1);
+
+    // Chart 2: Signal Radar
+    var c2 = echarts.init(document.getElementById('vio-chart-signals'));
+    c2.setOption({
+      tooltip:{trigger:'item'},
+      radar:{radius:'65%',indicator:[{name:'品牌(鲜水湾)',max:20},{name:'价格标题',max:20},{name:'购买力/囤',max:20},{name:'感谢小红书',max:20},{name:'夸张情绪',max:20},{name:'省略号',max:20},{name:'越吃越/代价',max:20},{name:'竞品对比',max:20},{name:'导流',max:20}],axisName:{fontSize:10}},
+      series:[{type:'radar',data:[{value:[17,14,10,8,6,5,3,3,1],name:'信号频次',areaStyle:{color:'rgba(220,38,38,0.15)'},lineStyle:{color:'#dc2626'},itemStyle:{color:'#dc2626'}}]}]
+    });
+    vioCharts.push(c2);
+
+    // Chart 3: Performance Comparison
+    var c3 = echarts.init(document.getElementById('vio-chart-perf'));
+    c3.setOption({
+      tooltip:{trigger:'axis'},
+      legend:{data:['违规笔记','有效笔记'],bottom:0},
+      grid:{left:50,right:20,top:20,bottom:40},
+      xAxis:{type:'category',data:['曝光量','阅读量','互动量','点赞量']},
+      yAxis:{type:'value'},
+      series:[
+        {name:'违规笔记',type:'bar',data:[5762,807,23,11],itemStyle:{borderRadius:[6,6,0,0],color:'#dc2626'},label:{show:true,position:'top',fontSize:10}},
+        {name:'有效笔记',type:'bar',data:[5642,758,21,8],itemStyle:{borderRadius:[6,6,0,0],color:'#2563eb'},label:{show:true,position:'top',fontSize:10}}
+      ]
+    });
+    vioCharts.push(c3);
+
+    // Chart 4: Pie
+    var c4 = echarts.init(document.getElementById('vio-chart-pie'));
+    c4.setOption({
+      tooltip:{trigger:'item',formatter:'{b}: {c}条 ({d}%)'},
+      series:[{type:'pie',radius:['45%','75%'],center:['50%','50%'],data:[
+        {name:'营销推广嫌疑',value:22,itemStyle:{color:'#dc2626'}},
+        {name:'标题党/内容规范',value:17,itemStyle:{color:'#d97706'}},
+        {name:'竞品对比',value:6,itemStyle:{color:'#2563eb'}},
+        {name:'导流/交易引导',value:4,itemStyle:{color:'#7c3aed'}},
+        {name:'其他',value:13,itemStyle:{color:'#94a3b8'}}
+      ],label:{fontSize:11}}]
+    });
+    vioCharts.push(c4);
+  };
 })();
 </script>
 
