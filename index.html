@@ -370,7 +370,7 @@ body {
   border-radius: 2px;
 }
 
-.chart-canvas { width: 100%; height: 300px; }
+.chart-canvas { width: 100%; height: 300px; min-height: 280px; }
 
 /* ---- TABLES ---- */
 .data-table {
@@ -1275,8 +1275,13 @@ body {
 </div>
 
 <script>
+// ============================================================
 // ECharts CDN fallback loader
-var _charts = [];
+// ============================================================
+var _charts = [];       // 鲜水湾图表实例
+var _xinCharts = [];    // 玺牛生鲜图表实例
+var _resizeTimer = null;
+
 function _initECharts() {
   // Guard: ensure echarts loaded
   if (typeof echarts === 'undefined') {
@@ -1286,42 +1291,54 @@ function _initECharts() {
     return;
   }
 
+  // Global error boundary — one chart failure won't block others
+  try {
+
   var months = ['12月','1月','2月','3月','4月','5月'];
   var fontCfg = { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif' };
   var tipCfg = { trigger: 'axis', confine: true, textStyle: { fontSize: 12 }, backgroundColor: '#fff', borderColor: '#e5e7eb', borderWidth: 1 };
   var axisLabelCfg = { color: '#6b7280', fontSize: 11, fontFamily: fontCfg.fontFamily };
   var splitCfg = { lineStyle: { color: '#f1f5f9', type: 'dashed' } };
 
-  // Helper: safe chart init with error isolation
+  // Helper: safe chart init with error isolation + multi-retry
   function safeInit(id, option) {
     var el = document.getElementById(id);
-    if (!el) return null;
-    // Ensure container has visible dimensions
-    var w = el.clientWidth || el.offsetWidth;
-    var h = el.clientHeight || el.offsetHeight;
-    if (w < 10 || h < 10) {
-      // Retry after a short delay (layout may not be complete)
+    if (!el) { console.warn('[Chart] Element not found: ' + id); return null; }
+
+    function doInit() {
+      var w = el.clientWidth || el.offsetWidth;
+      var h = el.clientHeight || el.offsetHeight;
+      if (w < 10 || h < 10) return false;
+      try {
+        var c = echarts.init(el);
+        c.setOption(option);
+        _charts.push(c);
+        return true;
+      } catch(e) {
+        el.innerHTML = '<p style="color:#ef4444;text-align:center;padding:20px;font-size:12px;">⚠️ 图表初始化失败: ' + e.message + '</p>';
+        console.error('[Chart] Init error for ' + id + ':', e);
+        return true; // error shown, don't retry
+      }
+    }
+
+    // Try immediate init first
+    if (doInit()) return null; // null means handled (pushed or errored)
+
+    // Retry up to 3 times with increasing delay (layout may not be complete)
+    var retries = 0;
+    var delays = [200, 400, 600];
+    function attempt() {
+      if (retries >= delays.length) {
+        el.innerHTML = '<p style="color:#94a3b8;text-align:center;padding:40px;font-size:12px;">⏳ 图表容器未就绪，请刷新页面重试</p>';
+        return;
+      }
       setTimeout(function() {
-        var w2 = el.clientWidth || el.offsetWidth;
-        var h2 = el.clientHeight || el.offsetHeight;
-        if (w2 >= 10 && h2 >= 10) {
-          try {
-            var c = echarts.init(el);
-            c.setOption(option);
-            _charts.push(c);
-          } catch(e) { el.innerHTML = '<p style="color:#ef4444;text-align:center;padding:20px;font-size:12px;">⚠️ 图表初始化失败: ' + e.message + '</p>'; }
-        }
-      }, 300);
-      return null;
+        retries++;
+        if (!doInit()) attempt(); // still not ready, retry
+      }, delays[retries - 1]);
     }
-    try {
-      var c = echarts.init(el);
-      c.setOption(option);
-      return c;
-    } catch(e) {
-      el.innerHTML = '<p style="color:#ef4444;text-align:center;padding:20px;font-size:12px;">⚠️ 图表初始化失败: ' + e.message + '</p>';
-      return null;
-    }
+    attempt();
+    return null;
   }
 
   // ---- Chart 1: Revenue & Orders ----
@@ -1424,6 +1441,16 @@ function _initECharts() {
     ]
   });
   if (c5) _charts.push(c5);
+
+  } // end global try-catch
+  catch(e) {
+    console.error('[鲜水湾] 图表初始化异常:', e);
+    document.querySelectorAll('#tab-xianshuiwan .chart-canvas').forEach(function(el) {
+      if (!el.innerHTML || el.children.length === 0) {
+        el.innerHTML = '<p style="color:#ef4444;text-align:center;padding:40px;font-size:12px;">⚠️ 报告图表加载异常: ' + e.message + '</p>';
+      }
+    });
+  }
 }
 
 // Load ECharts with CDN fallback, then init charts after DOM ready
@@ -1451,12 +1478,18 @@ function _initECharts() {
   'https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js'
 ]);
 
-// Debounced resize handler
-var _resizeTimer = null;
+// ============================================================
+// Unified Debounced Resize Handler (handles BOTH tab's charts)
+// ============================================================
 window.addEventListener('resize', function() {
   clearTimeout(_resizeTimer);
   _resizeTimer = setTimeout(function() {
-    _charts.forEach(function(c) { if (c && typeof c.isDisposed === 'function' && !c.isDisposed()) c.resize(); });
+    var allCharts = _charts.concat(_xinCharts);
+    allCharts.forEach(function(c) {
+      if (c && typeof c.isDisposed === 'function' && !c.isDisposed()) {
+        try { c.resize(); } catch(e) { /* ignore resize errors */ }
+      }
+    });
   }, 200);
 });
 
@@ -1480,30 +1513,53 @@ function switchTab(tabId, btn) {
 // ============================================================
 // 玺牛生鲜 ECharts
 // ============================================================
-var _xinCharts = [];
 var _xinData = {months:["12月","1月","2月","3月","4月","5月"],revenue:[3473,6443,5127,2507,2042,3317],orders:[40,59,47,24,21,37],ctr:[11.5,14.43,8.79,9.59,11.57,13.55],cvr:[4.33,4.02,7.83,4.51,5.74,6.86],convTerms:[23,34,31,13,16,20],zeroTerms:[98,135,75,63,51,62],catBeef:[3257,4860,4554,2317,1977,3187],catLamb:[0,1282,240,0,0,0],catPork:[0,125,65,125,65,65],catOther:[216,176,268,65,0,65]};
 
 function _xinSafeInit(id, option) {
   var el = document.getElementById(id);
-  if (!el) return null;
-  var w = el.clientWidth || el.offsetWidth;
-  var h = el.clientHeight || el.offsetHeight;
-  if (w < 10 || h < 10) {
-    setTimeout(function() {
-      var w2 = el.clientWidth || el.offsetWidth;
-      var h2 = el.clientHeight || el.offsetHeight;
-      if (w2 >= 10 && h2 >= 10) {
-        try { var c = echarts.init(el); c.setOption(option); _xinCharts.push(c); } catch(e) { el.innerHTML = '<p style="color:#ef4444;text-align:center;padding:20px;font-size:12px;">⚠️ ' + e.message + '</p>'; }
-      } else { el.innerHTML = '<p style="color:#94a3b8;text-align:center;padding:20px;font-size:12px;">图表容器未就绪</p>'; }
-    }, 300);
-    return null;
+  if (!el) { console.warn('[XinChart] Element not found: ' + id); return null; }
+
+  function doInit() {
+    var w = el.clientWidth || el.offsetWidth;
+    var h = el.clientHeight || el.offsetHeight;
+    if (w < 10 || h < 10) return false;
+    try {
+      var c = echarts.init(el);
+      c.setOption(option);
+      _xinCharts.push(c);
+      return true;
+    } catch(e) {
+      el.innerHTML = '<p style="color:#ef4444;text-align:center;padding:20px;font-size:12px;">⚠️ ' + e.message + '</p>';
+      console.error('[XinChart] Init error for ' + id + ':', e);
+      return true; // error shown, don't retry
+    }
   }
-  try { var c = echarts.init(el); c.setOption(option); return c; } catch(e) { el.innerHTML = '<p style="color:#ef4444;text-align:center;padding:20px;font-size:12px;">⚠️ ' + e.message + '</p>'; return null; }
+
+  if (doInit()) return null;
+
+  // Multi-retry with progressive delays
+  var retries = 0;
+  var delays = [200, 400, 600];
+  function attempt() {
+    if (retries >= delays.length) {
+      el.innerHTML = '<p style="color:#94a3b8;text-align:center;padding:40px;font-size:12px;">⏳ 图表容器未就绪，请刷新页面重试</p>';
+      return;
+    }
+    setTimeout(function() {
+      retries++;
+      if (!doInit()) attempt();
+    }, delays[retries - 1]);
+  }
+  attempt();
+  return null;
 }
 
 function _initXinCharts() {
-  if (typeof echarts === 'undefined') return;
+  if (typeof echarts === 'undefined') { console.warn('[玺牛生鲜] ECharts未加载'); return; }
   if (_xinCharts.length > 0) return; // already inited
+
+  // Global error boundary
+  try {
 
   var D = _xinData, M = D.months;
   var fontCfg = { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif' };
@@ -1609,13 +1665,15 @@ function _initXinCharts() {
   });
   if (c7) _xinCharts.push(c7);
 
-  // Resize handler for xin charts
-  window.addEventListener('resize', function() {
-    clearTimeout(_resizeTimer);
-    _resizeTimer = setTimeout(function() {
-      _xinCharts.forEach(function(c) { if (c && typeof c.isDisposed === 'function' && !c.isDisposed()) c.resize(); });
-    }, 200);
-  });
+  } // end global try-catch
+  catch(e) {
+    console.error('[玺牛生鲜] 图表初始化异常:', e);
+    document.querySelectorAll('#tab-xiniushengxian .chart-canvas').forEach(function(el) {
+      if (!el.innerHTML || el.children.length === 0) {
+        el.innerHTML = '<p style="color:#ef4444;text-align:center;padding:40px;font-size:12px;">⚠️ 玺牛生鲜图表加载异常: ' + e.message + '</p>';
+      }
+    });
+  }
 }
 </script>
 
