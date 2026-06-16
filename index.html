@@ -493,114 +493,149 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
 </div>
 
 <script>
-// 使用ECharts替代Chart.js — 对中国用户CDN更稳定
-(function loadCDN(urls, idx, onReady) {
+// ECharts CDN fallback loader
+var _charts = [];
+function _initECharts() {
+  var months = ['12月','1月','2月','3月','4月','5月'];
+  var fontCfg = { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif' };
+  var gridCfg = { left: 65, right: 65, bottom: 35, top: 50, containLabel: false };
+  var tipCfg = { trigger: 'axis', confine: true, textStyle: { fontSize: 12 } };
+  var axisLabelCfg = { color: '#6b7280', fontSize: 11, fontFamily: fontCfg.fontFamily };
+  var splitCfg = { lineStyle: { color: '#f1f5f9', type: 'dashed' } };
+
+  // ---- Chart 1: Revenue & Orders ----
+  var c1 = echarts.init(document.getElementById('chartRevenue'));
+  c1.setOption({
+    tooltip: Object.assign({}, tipCfg, { axisPointer: { type: 'cross' } }),
+    legend: { data: ['营收 (¥)', '订单数'], top: 5, textStyle: { fontSize: 12 } },
+    grid: gridCfg,
+    xAxis: { type: 'category', data: months, axisLabel: axisLabelCfg, axisLine: { lineStyle: { color: '#e5e7eb' } } },
+    yAxis: [
+      { type: 'value', name: '营收 (¥)', nameTextStyle: { fontSize: 11 }, axisLabel: axisLabelCfg, splitLine: splitCfg },
+      { type: 'value', name: '订单数', nameTextStyle: { fontSize: 11 }, axisLabel: axisLabelCfg, splitLine: { show: false } }
+    ],
+    series: [
+      { name: '营收 (¥)', type: 'bar', data: [3532, 2974, 7303, 5137, 34203, 47335], itemStyle: { color: '#f97316', borderRadius: 4 }, barMaxWidth: 40 },
+      { name: '订单数', type: 'line', yAxisIndex: 1, data: [34, 36, 40, 53, 280, 561], smooth: true, symbol: 'circle', symbolSize: 6, lineStyle: { color: '#3b82f6', width: 2 }, itemStyle: { color: '#3b82f6' } }
+    ]
+  });
+  _charts.push(c1);
+
+  // ---- Chart 2: CTR & CVR ----
+  var c2 = echarts.init(document.getElementById('chartCTRCVR'));
+  c2.setOption({
+    tooltip: tipCfg,
+    legend: { data: ['CTR', 'CVR'], top: 5, textStyle: { fontSize: 12 } },
+    grid: { left: 50, right: 20, bottom: 35, top: 50 },
+    xAxis: { type: 'category', data: months, axisLabel: axisLabelCfg, axisLine: { lineStyle: { color: '#e5e7eb' } } },
+    yAxis: { type: 'value', name: '%', nameTextStyle: { fontSize: 11 }, min: 0, axisLabel: axisLabelCfg, splitLine: splitCfg },
+    series: [
+      { name: 'CTR', type: 'line', data: [5.94, 3.93, 5.50, 7.98, 17.70, 12.92], smooth: true, symbol: 'circle', symbolSize: 6, lineStyle: { color: '#f97316', width: 2 }, itemStyle: { color: '#f97316' }, areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(249,115,22,0.15)' }, { offset: 1, color: 'rgba(249,115,22,0.01)' }] } } },
+      { name: 'CVR', type: 'line', data: [3.80, 4.26, 3.24, 3.89, 6.52, 7.92], smooth: true, symbol: 'circle', symbolSize: 6, lineStyle: { color: '#10b981', width: 2 }, itemStyle: { color: '#10b981' }, areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(16,185,129,0.15)' }, { offset: 1, color: 'rgba(16,185,129,0.01)' }] } } }
+    ]
+  });
+  _charts.push(c2);
+
+  // ---- Chart 3: Category Revenue Doughnut ----
+  var c3 = echarts.init(document.getElementById('chartCategory'));
+  c3.setOption({
+    tooltip: { trigger: 'item', formatter: '{b}: ¥{c} ({d}%)', confine: true, textStyle: { fontSize: 12 } },
+    legend: { orient: 'vertical', right: 10, top: 'center', textStyle: { fontSize: 12 } },
+    series: [{
+      type: 'pie', radius: ['35%', '65%'], center: ['38%', '50%'],
+      avoidLabelOverlap: true, padAngle: 2, itemStyle: { borderRadius: 6 },
+      label: { show: false }, emphasis: { label: { show: true, fontSize: 14, fontWeight: 'bold' } },
+      data: [
+        { value: 31691, name: '三文鱼', itemStyle: { color: '#f97316' } },
+        { value: 26191, name: '减脂餐/健康', itemStyle: { color: '#3b82f6' } },
+        { value: 19882, name: '虾类', itemStyle: { color: '#10b981' } },
+        { value: 12782, name: '其他/长尾', itemStyle: { color: '#8b5cf6' } },
+        { value: 5614, name: '生蚝', itemStyle: { color: '#ef4444' } },
+        { value: 4187, name: '鱼类（其他）', itemStyle: { color: '#f59e0b' } }
+      ]
+    }]
+  });
+  _charts.push(c3);
+
+  // ---- Chart 4: Seasonal Trends ----
+  var c4 = echarts.init(document.getElementById('chartSeasonal'));
+  c4.setOption({
+    tooltip: tipCfg,
+    legend: { data: ['三文鱼','减脂餐/健康','虾类','生蚝'], top: 5, textStyle: { fontSize: 11 } },
+    grid: { left: 65, right: 20, bottom: 35, top: 50 },
+    xAxis: { type: 'category', data: months, axisLabel: axisLabelCfg, axisLine: { lineStyle: { color: '#e5e7eb' } } },
+    yAxis: { type: 'value', name: '营收 (¥)', nameTextStyle: { fontSize: 11 }, axisLabel: axisLabelCfg, splitLine: splitCfg },
+    series: [
+      { name: '三文鱼', type: 'line', data: [1152, 113, 4506, 2559, 16029, 7333], smooth: true, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#f97316', width: 2 }, itemStyle: { color: '#f97316' } },
+      { name: '减脂餐/健康', type: 'line', data: [0, 0, 0, 0, 2710, 23481], smooth: true, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#3b82f6', width: 2 }, itemStyle: { color: '#3b82f6' } },
+      { name: '虾类', type: 'line', data: [70, 421, 1918, 1409, 8514, 7551], smooth: true, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#10b981', width: 2 }, itemStyle: { color: '#10b981' } },
+      { name: '生蚝', type: 'line', data: [2082, 1928, 879, 725, 0, 0], smooth: false, symbol: 'circle', symbolSize: 5, lineStyle: { color: '#ef4444', width: 2, type: 'dashed' }, itemStyle: { color: '#ef4444' } }
+    ]
+  });
+  _charts.push(c4);
+
+  // ---- Chart 5: Search Term Coverage ----
+  var c5 = echarts.init(document.getElementById('chartDiversity'));
+  c5.setOption({
+    tooltip: Object.assign({}, tipCfg, {
+      axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        if (!params || params.length < 2) return '';
+        var conv = params[0].value;
+        var zero = params[1].value;
+        var total = conv + zero;
+        return params[0].axisValue + '<br/>' +
+          params[0].marker + ' 有转化词: ' + conv + '<br/>' +
+          params[1].marker + ' 零转化词: ' + zero + '<br/>' +
+          '<strong>转化覆盖率: ' + Math.round(conv / total * 100) + '%</strong>';
+      }
+    }),
+    legend: { data: ['有转化词','零转化词'], top: 5, textStyle: { fontSize: 12 } },
+    grid: { left: 65, right: 20, bottom: 35, top: 50 },
+    xAxis: { type: 'category', data: months, axisLabel: axisLabelCfg, axisLine: { lineStyle: { color: '#e5e7eb' } } },
+    yAxis: { type: 'value', name: '搜索词数量', nameTextStyle: { fontSize: 11 }, axisLabel: axisLabelCfg, splitLine: splitCfg },
+    series: [
+      { name: '有转化词', type: 'bar', stack: 'total', data: [21, 26, 27, 37, 157, 311], itemStyle: { color: '#10b981' }, barMaxWidth: 40 },
+      { name: '零转化词', type: 'bar', stack: 'total', data: [151, 198, 233, 224, 314, 583], itemStyle: { color: '#e5e7eb' }, barMaxWidth: 40 }
+    ]
+  });
+  _charts.push(c5);
+}
+
+// Load ECharts with CDN fallback, then init charts after DOM ready
+(function loadECharts(urls, idx) {
   if (idx >= urls.length) {
-    document.querySelectorAll('.chart-box').forEach(function(b) {
-      b.innerHTML = '<p style="color:#ef4444;text-align:center;padding:40px;">⚠️ 图表库加载失败，请刷新重试</p>';
+    document.querySelectorAll('.chart-canvas').forEach(function(el) {
+      el.innerHTML = '<p style="color:#ef4444;text-align:center;padding:40px;">⚠️ 图表库加载失败，请检查网络后刷新</p>';
     });
     return;
   }
   var s = document.createElement('script');
   s.src = urls[idx];
-  s.onload = onReady;
-  s.onerror = function() { loadCDN(urls, idx + 1, onReady); };
+  s.onload = function() {
+    // Ensure DOM is ready before initializing charts
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', _initECharts);
+    } else {
+      _initECharts();
+    }
+  };
+  s.onerror = function() { loadECharts(urls, idx + 1); };
   document.head.appendChild(s);
 })([
   'https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js',
-  'https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js'
-], 0, function initCharts() {
+  'https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js'
+]);
 
-// Chart 1: Revenue & Orders
-var chart1 = echarts.init(document.getElementById('chartRevenue'));
-chart1.setOption({
-  tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
-  legend: { data: ['营收 (¥)', '订单数'], top: 0 },
-  grid: { left: 60, right: 60, bottom: 30, top: 40 },
-  xAxis: { type: 'category', data: ['12月','1月','2月','3月','4月','5月'], axisLine: { lineStyle: { color: '#e5e7eb' } } },
-  yAxis: [
-    { type: 'value', name: '营收 (¥)', axisLine: { show: true }, splitLine: { lineStyle: { color: '#f1f5f9' } } },
-    { type: 'value', name: '订单数', axisLine: { show: true }, splitLine: { show: false } }
-  ],
-  series: [
-    { name: '营收 (¥)', type: 'bar', data: [3532, 2974, 7303, 5137, 34203, 47335], itemStyle: { color: '#f97316', borderRadius: [6,6,0,0] } },
-    { name: '订单数', type: 'line', yAxisIndex: 1, data: [34, 36, 40, 53, 280, 561], lineStyle: { color: '#3b82f6' }, itemStyle: { color: '#3b82f6' }, smooth: true }
-  ]
-});
-
-// Chart 2: CTR & CVR
-var chart2 = echarts.init(document.getElementById('chartCTRCVR'));
-chart2.setOption({
-  tooltip: { trigger: 'axis' },
-  legend: { data: ['CTR', 'CVR'], top: 0 },
-  grid: { left: 50, right: 20, bottom: 30, top: 40 },
-  xAxis: { type: 'category', data: ['12月','1月','2月','3月','4月','5月'], axisLine: { lineStyle: { color: '#e5e7eb' } } },
-  yAxis: { type: 'value', name: '%', min: 0, splitLine: { lineStyle: { color: '#f1f5f9' } } },
-  series: [
-    { name: 'CTR', type: 'line', data: [5.94, 3.93, 5.50, 7.98, 17.70, 12.92], lineStyle: { color: '#f97316' }, areaStyle: { color: 'rgba(249,115,22,0.1)' }, smooth: true, symbol: 'circle' },
-    { name: 'CVR', type: 'line', data: [3.80, 4.26, 3.24, 3.89, 6.52, 7.92], lineStyle: { color: '#10b981' }, areaStyle: { color: 'rgba(16,185,129,0.1)' }, smooth: true, symbol: 'circle' }
-  ]
-});
-
-// Chart 3: Category Revenue Pie
-var chart3 = echarts.init(document.getElementById('chartCategory'));
-chart3.setOption({
-  tooltip: { trigger: 'item', formatter: '{b}: ¥{c}' },
-  legend: { orient: 'vertical', right: 10, top: 'center', textStyle: { fontSize: 12 } },
-  series: [{
-    type: 'pie', radius: ['40%', '70%'], center: ['40%', '50%'], avoidLabelOverlap: true,
-    label: { show: false }, emphasis: { label: { show: true, fontSize: 14 } },
-    data: [
-      { value: 31691, name: '三文鱼', itemStyle: { color: '#f97316' } },
-      { value: 26191, name: '减脂餐/健康', itemStyle: { color: '#3b82f6' } },
-      { value: 19882, name: '虾类', itemStyle: { color: '#10b981' } },
-      { value: 12782, name: '其他/长尾', itemStyle: { color: '#8b5cf6' } },
-      { value: 5614, name: '生蚝', itemStyle: { color: '#ef4444' } },
-      { value: 4187, name: '鱼类（其他）', itemStyle: { color: '#f59e0b' } }
-    ]
-  }]
-});
-
-// Chart 4: Seasonal
-var chart4 = echarts.init(document.getElementById('chartSeasonal'));
-chart4.setOption({
-  tooltip: { trigger: 'axis' },
-  legend: { data: ['三文鱼','减脂餐/健康','虾类','生蚝'], top: 0, textStyle: { fontSize: 11 } },
-  grid: { left: 60, right: 20, bottom: 30, top: 40 },
-  xAxis: { type: 'category', data: ['12月','1月','2月','3月','4月','5月'], axisLine: { lineStyle: { color: '#e5e7eb' } } },
-  yAxis: { type: 'value', name: '营收 (¥)', splitLine: { lineStyle: { color: '#f1f5f9' } } },
-  series: [
-    { name: '三文鱼', type: 'line', data: [1152, 113, 4506, 2559, 16029, 7333], lineStyle: { color: '#f97316' }, smooth: true },
-    { name: '减脂餐/健康', type: 'line', data: [0, 0, 0, 0, 2710, 23481], lineStyle: { color: '#3b82f6' }, smooth: true },
-    { name: '虾类', type: 'line', data: [70, 421, 1918, 1409, 8514, 7551], lineStyle: { color: '#10b981' }, smooth: true },
-    { name: '生蚝', type: 'line', data: [2082, 1928, 879, 725, 0, 0], lineStyle: { color: '#ef4444', type: 'dashed' }, smooth: true }
-  ]
-});
-
-// Chart 5: Coverage Rate
-var chart5 = echarts.init(document.getElementById('chartDiversity'));
-chart5.setOption({
-  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: function(params) {
-    var conv = params[0].value;
-    var zero = params[1].value;
-    var total = conv + zero;
-    return params[0].axisValue + '<br/>' + params[0].marker + ' 有转化词: ' + conv + '<br/>' + params[1].marker + ' 零转化词: ' + zero + '<br/><strong>转化覆盖率: ' + Math.round(conv / total * 100) + '%</strong>';
-  }},
-  legend: { data: ['有转化词','零转化词'], top: 0 },
-  grid: { left: 60, right: 20, bottom: 30, top: 40 },
-  xAxis: { type: 'category', data: ['12月','1月','2月','3月','4月','5月'], axisLine: { lineStyle: { color: '#e5e7eb' } } },
-  yAxis: { type: 'value', name: '搜索词数量', splitLine: { lineStyle: { color: '#f1f5f9' } } },
-  series: [
-    { name: '有转化词', type: 'bar', stack: 'total', data: [21, 26, 27, 37, 157, 311], itemStyle: { color: '#10b981', borderRadius: [0,0,0,0] } },
-    { name: '零转化词', type: 'bar', stack: 'total', data: [151, 198, 233, 224, 314, 583], itemStyle: { color: '#e5e7eb', borderRadius: [0,0,0,0] } }
-  ]
-});
-
-// 窗口resize自适应
+// Debounced resize handler
+var _resizeTimer = null;
 window.addEventListener('resize', function() {
-  chart1.resize(); chart2.resize(); chart3.resize(); chart4.resize(); chart5.resize();
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(function() {
+    _charts.forEach(function(c) { if (c && !c.isDisposed()) c.resize(); });
+  }, 200);
 });
-}); // end initCharts
 </script>
 
 </body>
