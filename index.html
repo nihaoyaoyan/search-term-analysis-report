@@ -494,6 +494,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
 
 <script>
 // CDN fallback loader for Chart.js — ensures charts render even if primary CDN is blocked
+// Chart.js 4.x UMD file is "chart.umd.js" (not "chart.umd.min.js")
 (function loadChartJS(cdnUrls, idx, onReady) {
   if (idx >= cdnUrls.length) {
     document.querySelectorAll('.chart-box').forEach(function(b) {
@@ -507,9 +508,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC'
   s.onerror = function() { loadChartJS(cdnUrls, idx + 1, onReady); };
   document.head.appendChild(s);
 })([
-  'https://unpkg.com/chart.js@4.4.0/dist/chart.umd.min.js',
-  'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js',
-  'https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js'
+  'https://cdn.bootcdn.net/ajax/libs/chart.js/4.4.0/chart.umd.min.js',
+  'https://unpkg.com/chart.js@4.4.0/dist/chart.umd.js',
+  'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js'
 ], 0, function initCharts() {
 
 // Chart 1: Revenue & Orders
